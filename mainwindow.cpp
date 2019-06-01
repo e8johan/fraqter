@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "abstractfractalview.h"
+#include "abstractimaginaryrangeview.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_fractalView = new AbstractFractalView(this);
+    m_fractalView = new AbstractImaginaryRangeView(this);
     setCentralWidget(m_fractalView);
 
     connect(ui->actionFileExit, &QAction::triggered, qApp, &QCoreApplication::quit);

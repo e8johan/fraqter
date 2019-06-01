@@ -27,11 +27,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    abstractfractalview.cpp
+    abstractfractalview.cpp \
+    abstractimaginaryrangeview.cpp
 
 HEADERS += \
         mainwindow.h \
-    abstractfractalview.h
+    abstractfractalview.h \
+    abstractimaginaryrangeview.h
 
 FORMS += \
         mainwindow.ui

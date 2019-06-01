@@ -9,17 +9,6 @@ class AbstractFractalView : public QWidget
     Q_OBJECT
 public:
     explicit AbstractFractalView(QWidget *parent = nullptr);
-
-signals:
-
-public slots:
-
-protected:
-    void paintEvent(QPaintEvent*);
-    void resizeEvent(QResizeEvent*);
-
-private:
-    QImage m_buffer;
 };
 
 #endif // ABSTRACTFRACTALVIEW_H
