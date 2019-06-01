@@ -12,7 +12,7 @@ protected:
     void paintEvent(QPaintEvent*);
     void resizeEvent(QResizeEvent*);
 
-    virtual double iterate(QPair<double, double> c) const;
+    virtual double iterate(QPair<double, double>) const = 0;
 
 private:
     QImage m_buffer;

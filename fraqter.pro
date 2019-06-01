@@ -28,12 +28,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     abstractfractalview.cpp \
-    abstractimaginaryrangeview.cpp
+    abstractimaginaryrangeview.cpp \
+    fractalmandelbrot.cpp \
+    fractaljulia.cpp
 
 HEADERS += \
         mainwindow.h \
     abstractfractalview.h \
-    abstractimaginaryrangeview.h
+    abstractimaginaryrangeview.h \
+    fractalmandelbrot.h \
+    fractaljulia.h
 
 FORMS += \
         mainwindow.ui
