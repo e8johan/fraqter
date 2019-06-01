@@ -31,7 +31,8 @@ SOURCES += \
     abstractimaginaryrangeview.cpp \
     fractalmandelbrot.cpp \
     fractaljulia.cpp \
-    newdialog.cpp
+    newdialog.cpp \
+    fractalfactory.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,7 +40,8 @@ HEADERS += \
     abstractimaginaryrangeview.h \
     fractalmandelbrot.h \
     fractaljulia.h \
-    newdialog.h
+    newdialog.h \
+    fractalfactory.h
 
 FORMS += \
         mainwindow.ui \

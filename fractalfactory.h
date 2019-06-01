@@ -15,34 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#ifndef FRACTALFACTORY_H
+#define FRACTALFACTORY_H
 
-#include "newdialog.h"
+#include <QAbstractListModel>
 
-#include "fractalfactory.h"
-#include "abstractfractalview.h"
+class AbstractFractalView;
 
-MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+class FractalFactory;
+class FractalFactory : public QAbstractListModel
 {
-    ui->setupUi(this);
+    Q_OBJECT
+public:
+    static FractalFactory *instance();
 
-    m_fractalView = FractalFactory::instance()->createView(fractalId);
-    setCentralWidget(m_fractalView);
+    virtual int rowCount(const QModelIndex &) const override;
+    virtual QVariant data(const QModelIndex &, int) const override;
 
-    connect(ui->actionFileNew, &QAction::triggered, this, &MainWindow::onNew);
-    connect(ui->actionFileExit, &QAction::triggered, qApp, &QCoreApplication::quit);
-}
+    AbstractFractalView *createView(const QString fractalId);
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+private:
+    FractalFactory();
 
-void MainWindow::onNew()
-{
-    NewDialog newDialog(this);
-    newDialog.exec();
-}
+    QStringList m_fractalIds;
+};
+
+#endif // FRACTALFACTORY_H

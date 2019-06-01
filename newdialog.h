@@ -42,7 +42,6 @@ private slots:
 
 private:
     Ui::NewDialog *ui;
-    QStringListModel m_fractalNames;
 };
 
 #endif // NEWDIALOG_H

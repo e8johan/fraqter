@@ -22,15 +22,14 @@
 #include <QPushButton>
 
 #include "mainwindow.h"
+#include "fractalfactory.h"
 
 NewDialog::NewDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::NewDialog)
 {
-    m_fractalNames.setStringList(QStringList() << tr("Mandelbrot") << tr("Julia"));
-
     ui->setupUi(this);
-    ui->listViewFractals->setModel(&m_fractalNames);
+    ui->listViewFractals->setModel(FractalFactory::instance());
 
     connect(ui->listViewFractals->selectionModel(), &QItemSelectionModel::selectionChanged, this, &NewDialog::onFractalChanged);
     connect(ui->listViewFractals, &QAbstractItemView::doubleClicked, this, &NewDialog::onDoubleClickedItem);
