@@ -15,18 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef FRACTALMANDELBROT_H
-#define FRACTALMANDELBROT_H
+#include "fmath.h"
 
-#include "abstractimaginaryrangeview.h"
-
-class FractalMandelbrot : public AbstractImaginaryRangeView
+FComplex::FComplex(double r, double i)
 {
-public:
-    explicit FractalMandelbrot(QWidget *parent = nullptr);
+    real = r;
+    imag = i;
+}
 
-protected:
-    virtual double iterate(const FComplex &c0) const override;
-};
-
-#endif // FRACTALMANDELBROT_H
+bool operator==(FComplex a, FComplex b)
+{
+    return (a.real == b.real) && (a.imag == b.imag);
+}

@@ -22,11 +22,26 @@
 
 class FractalJulia : public AbstractImaginaryRangeView
 {
+    Q_OBJECT
+
+    Q_PROPERTY(FComplex c READ cValue WRITE setCValue NOTIFY cValueChanged SCRIPTABLE true)
+
 public:
     explicit FractalJulia(QWidget *parent = nullptr);
 
+    FComplex cValue() const;
+
+public slots:
+    void setCValue(FComplex c);
+
+signals:
+    void cValueChanged(FComplex c);
+
 protected:
-    virtual double iterate(QPair<double, double> z0) const override;
+    virtual double iterate(const FComplex &z0) const override;
+
+private:
+    FComplex m_cValue;
 };
 
 #endif // FRACTALJULIA_H

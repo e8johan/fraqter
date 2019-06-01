@@ -22,16 +22,16 @@ FractalMandelbrot::FractalMandelbrot(QWidget *parent) : AbstractImaginaryRangeVi
 
 }
 
-double FractalMandelbrot::iterate(QPair<double, double> c0) const
+double FractalMandelbrot::iterate(const FComplex &c0) const
 {
-    QPair<double, double> c = c0;
-    const int imax = 255;
+    FComplex c = c0;
+    const int imax = maxIterations();
 
     int i;
     for (i=0; i<imax; ++i)
     {
-        QPair<double, double> nc(c.first*c.first - c.second*c.second + c0.first, 2*c.first*c.second+c0.second);
-        if (nc.first*nc.first + nc.second+nc.second > 4.0)
+        FComplex nc(c.real*c.real - c.imag*c.imag + c0.real, 2*c.real*c.imag+c0.imag);
+        if (nc.real*nc.real + nc.imag*nc.imag > 4.0)
             break;
 
         c = nc;

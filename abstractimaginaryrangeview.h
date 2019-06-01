@@ -19,20 +19,47 @@
 #define ABSTRACTIMAGINARYRANGEVIEW_H
 
 #include "abstractfractalview.h"
+#include "fmath.h"
 
 class AbstractImaginaryRangeView : public AbstractFractalView
 {
+    Q_OBJECT
+
+    Q_PROPERTY(FComplex topLeftCoord READ topLeftCoord WRITE setTopLeftCoord NOTIFY topLeftCoordChanged SCRIPTABLE true)
+    Q_PROPERTY(FComplex bottomRightCoord READ bottomRightCoord WRITE setBottomRightCoord NOTIFY bottomRightCoordChanged SCRIPTABLE true)
+    Q_PROPERTY(int maxIterations READ maxIterations WRITE setMaxIterations NOTIFY maxIterationsChanged SCRIPTABLE true)
+
 public:
     explicit AbstractImaginaryRangeView(QWidget *parent = nullptr);
+
+    FComplex topLeftCoord() const;
+    FComplex bottomRightCoord() const;
+    int maxIterations() const;
+
+public slots:
+    void setTopLeftCoord(FComplex topLeftCoord);
+    void setBottomRightCoord(FComplex bottomRightCoord);
+    void setMaxIterations(int maxIterations);
+
+signals:
+    void topLeftCoordChanged(FComplex topLeftCoord);
+    void bottomRightCoordChanged(FComplex bottomRightCoord);
+    void maxIterationsChanged(int maxIterations);
 
 protected:
     void paintEvent(QPaintEvent*);
     void resizeEvent(QResizeEvent*);
 
-    virtual double iterate(QPair<double, double>) const = 0;
+    void redrawBuffer();
+
+    virtual double iterate(const FComplex &) const = 0;
 
 private:
     QImage m_buffer;
+
+    FComplex m_topLeftCoord;
+    FComplex m_bottomRightCoord;
+    int m_maxIterations;
 };
 
 #endif // ABSTRACTIMAGINARYRANGEVIEW_H

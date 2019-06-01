@@ -22,9 +22,58 @@
 
 #include <QPainter>
 
-AbstractImaginaryRangeView::AbstractImaginaryRangeView(QWidget *parent) : AbstractFractalView(parent)
+AbstractImaginaryRangeView::AbstractImaginaryRangeView(QWidget *parent)
+    : AbstractFractalView(parent)
+    , m_topLeftCoord(-2, -2)
+    , m_bottomRightCoord(2, 2)
+    , m_maxIterations(1000)
 {
 
+}
+
+FComplex AbstractImaginaryRangeView::topLeftCoord() const
+{
+    return m_topLeftCoord;
+}
+
+FComplex AbstractImaginaryRangeView::bottomRightCoord() const
+{
+    return m_bottomRightCoord;
+}
+
+int AbstractImaginaryRangeView::maxIterations() const
+{
+    return m_maxIterations;
+}
+
+void AbstractImaginaryRangeView::setTopLeftCoord(FComplex topLeftCoord)
+{
+    if (m_topLeftCoord == topLeftCoord)
+        return;
+
+    m_topLeftCoord = topLeftCoord;
+    redrawBuffer();
+    emit topLeftCoordChanged(m_topLeftCoord);
+}
+
+void AbstractImaginaryRangeView::setBottomRightCoord(FComplex bottomRightCoord)
+{
+    if (m_bottomRightCoord == bottomRightCoord)
+        return;
+
+    m_bottomRightCoord = bottomRightCoord;
+    redrawBuffer();
+    emit bottomRightCoordChanged(m_bottomRightCoord);
+}
+
+void AbstractImaginaryRangeView::setMaxIterations(int maxIterations)
+{
+    if (m_maxIterations == maxIterations)
+        return;
+
+    m_maxIterations = maxIterations;
+    redrawBuffer();
+    emit maxIterationsChanged(m_maxIterations);
 }
 
 void AbstractImaginaryRangeView::paintEvent(QPaintEvent *e)
@@ -41,18 +90,23 @@ void AbstractImaginaryRangeView::paintEvent(QPaintEvent *e)
     }
 }
 
-void AbstractImaginaryRangeView::resizeEvent(QResizeEvent *e)
+void AbstractImaginaryRangeView::resizeEvent(QResizeEvent *)
 {
-    m_buffer = QImage(e->size(), QImage::Format_ARGB32);
+    redrawBuffer();
+}
 
-    const QPair<double, double> m_min(-2.1, -1.3);
-    const QPair<double, double> m_max(0.6, 1.3);
+void AbstractImaginaryRangeView::redrawBuffer()
+{
+    m_buffer = QImage(size(), QImage::Format_ARGB32);
+
+    const QPair<double, double> m_min(m_topLeftCoord.real, m_topLeftCoord.imag);
+    const QPair<double, double> m_max(m_bottomRightCoord.real, m_bottomRightCoord.imag);
 
     for (int x=0; x<m_buffer.width(); ++x)
         for (int y=0; y<m_buffer.height(); ++y)
         {
-            QPair<double, double> c0(double(x)/double(m_buffer.width())*(m_max.first-m_min.first)+m_min.first, double(y)/double(m_buffer.height())*(m_max.second-m_min.second)+m_min.second);
-            int c = int(255.0 * iterate(c0));
+            FComplex coord(double(x)/double(m_buffer.width())*(m_bottomRightCoord.real-m_topLeftCoord.real)+m_topLeftCoord.real, double(y)/double(m_buffer.height())*(m_bottomRightCoord.imag-m_topLeftCoord.imag)+m_topLeftCoord.imag);
+            int c = int(255.0 * iterate(coord));
             m_buffer.setPixelColor(x, y, QColor(c, c, c));
         }
 }

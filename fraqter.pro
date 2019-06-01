@@ -32,7 +32,8 @@ SOURCES += \
     fractalmandelbrot.cpp \
     fractaljulia.cpp \
     newdialog.cpp \
-    fractalfactory.cpp
+    fractalfactory.cpp \
+    fmath.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -41,7 +42,8 @@ HEADERS += \
     fractalmandelbrot.h \
     fractaljulia.h \
     newdialog.h \
-    fractalfactory.h
+    fractalfactory.h \
+    fmath.h
 
 FORMS += \
         mainwindow.ui \

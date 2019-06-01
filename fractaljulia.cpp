@@ -17,22 +17,39 @@
  */
 #include "fractaljulia.h"
 
-FractalJulia::FractalJulia(QWidget *parent) : AbstractImaginaryRangeView(parent)
+FractalJulia::FractalJulia(QWidget *parent)
+    : AbstractImaginaryRangeView(parent)
+    , m_cValue(-0.8, 0.156)
 {
 
 }
 
-double FractalJulia::iterate(QPair<double, double> z0) const
+FComplex FractalJulia::cValue() const
 {
-    const QPair<double, double> c(-0.8, 0.156);
-    QPair<double, double> z = z0;
-    const int imax = 500;
+    return m_cValue;
+}
+
+void FractalJulia::setCValue(FComplex c)
+{
+    if (m_cValue == c)
+        return;
+
+    m_cValue = c;
+    redrawBuffer();
+    emit cValueChanged(m_cValue);
+}
+
+double FractalJulia::iterate(const FComplex &z0) const
+{
+    const FComplex c = cValue();
+    FComplex z = z0;
+    const int imax = maxIterations();
 
     int i;
     for (i=0; i<imax; ++i)
     {
-        QPair<double, double> nz(z.first*z.first-z.second*z.second+c.first, 2*z.first*z.second+c.second);
-        if (nz.first*nz.first + nz.second+nz.second > 4.0)
+        FComplex nz(z.real*z.real-z.imag*z.imag+c.real, 2*z.real*z.imag+c.imag);
+        if (nz.real*nz.real + nz.imag*nz.imag > 4.0)
             break;
 
         z = nz;
