@@ -14,8 +14,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(const QString &fractalId, QWidget *parent = nullptr);
     ~MainWindow();
+
+private slots:
+    void onNew();
 
 private:
     Ui::MainWindow *ui;

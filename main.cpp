@@ -1,11 +1,14 @@
-#include "mainwindow.h"
 #include <QApplication>
+
+#include "newdialog.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
-    return a.exec();
+    NewDialog newDialog;
+    if (newDialog.exec() == QDialog::Accepted)
+        return a.exec();
+    else
+        return 0;
 }

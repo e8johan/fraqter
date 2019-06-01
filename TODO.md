@@ -6,6 +6,5 @@ TODO list for Fraqter
 - Implement zooming
 - Implement panning
 - Have a templated value type, i.e. double, that can be replaced with an arbitrary precision implementation
-- Implement dialog to pick fractal when creating a new window
-- Start from fractal picker dialog
 - Create colouring control, i.e. mapping the value of the fractal part (range 0 to 1) to a colour range
+- Implement a proper fractals model + factory

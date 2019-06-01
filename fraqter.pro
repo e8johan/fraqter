@@ -30,17 +30,20 @@ SOURCES += \
     abstractfractalview.cpp \
     abstractimaginaryrangeview.cpp \
     fractalmandelbrot.cpp \
-    fractaljulia.cpp
+    fractaljulia.cpp \
+    newdialog.cpp
 
 HEADERS += \
         mainwindow.h \
     abstractfractalview.h \
     abstractimaginaryrangeview.h \
     fractalmandelbrot.h \
-    fractaljulia.h
+    fractaljulia.h \
+    newdialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    newdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
