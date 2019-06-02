@@ -3,7 +3,7 @@ Fraqter
 
 A fractal exploration program.
 
-![The robot](https://github.com/e8johan/fraqter/raw/master/docs/figures/mainwindow.png)
+![Fraqter in action](https://github.com/e8johan/fraqter/raw/master/docs/figures/mainwindow.png)
 
 License
 -------
