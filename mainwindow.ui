@@ -42,6 +42,12 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="propertiesDockWidget">
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="propertiesDockContents"/>
+  </widget>
   <action name="actionFileNew">
    <property name="text">
     <string>&amp;New...</string>

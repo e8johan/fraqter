@@ -106,7 +106,12 @@ void AbstractImaginaryRangeView::redrawBuffer()
         for (int y=0; y<m_buffer.height(); ++y)
         {
             FComplex coord(double(x)/double(m_buffer.width())*(m_bottomRightCoord.real-m_topLeftCoord.real)+m_topLeftCoord.real, double(y)/double(m_buffer.height())*(m_bottomRightCoord.imag-m_topLeftCoord.imag)+m_topLeftCoord.imag);
-            int c = int(255.0 * iterate(coord));
-            m_buffer.setPixelColor(x, y, QColor(c, c, c));
+            double f = iterate(coord);
+            QColor color = QColor(0, 0, 0);
+            if (f < 255.0 / 256.0)
+                color = QColor(int(f*255), int(f*255), int((1.0-f)*64));
+            m_buffer.setPixelColor(x, y, color);
         }
+
+    update();
 }
