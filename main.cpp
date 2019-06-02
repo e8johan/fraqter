@@ -18,10 +18,13 @@
 #include <QApplication>
 
 #include "newdialog.h"
+#include "fmath.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    initializeFMath();
 
     NewDialog newDialog;
     if (newDialog.exec() == QDialog::Accepted)

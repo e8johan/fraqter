@@ -31,8 +31,6 @@
 #include "fractalfactory.h"
 #include "abstractfractalview.h"
 
-#include <QtDebug>
-
 MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -60,14 +58,13 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
              */
             QLabel *l = new QLabel(mo->property(i).name(), ui->propertiesDockContents);
             QWidget *editor = nullptr;
-            if (mo->property(i).type() == QVariant::Int)
+            if (QString(mo->property(i).typeName()) == "int")
             {
                 QSpinBox *sb = new QSpinBox(ui->propertiesDockContents);
                 sb->setRange(1, 5000);
                 sb->setValue(m_fractalView->property(mo->property(i).name()).toInt());
                 connect(sb, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
                         [this, i](int newValue) {
-                            qDebug() << i << "==>" << this->m_fractalView->metaObject()->property(i).name();
                             this->m_fractalView->setProperty(this->m_fractalView->metaObject()->property(i).name(), newValue);
                         } );
 

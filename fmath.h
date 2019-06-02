@@ -18,13 +18,22 @@
 #ifndef FMATH_H
 #define FMATH_H
 
+#include <QMetaType>
+#include <QString>
+
 struct FComplex
 {
+    FComplex();
     FComplex(double, double);
 
     double real, imag;
 };
 
+Q_DECLARE_METATYPE(FComplex)
+
 bool operator==(FComplex a, FComplex b);
+QString convertFComplexToString(FComplex);
+
+void initializeFMath();
 
 #endif // FMATH_H

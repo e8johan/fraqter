@@ -17,6 +17,12 @@
  */
 #include "fmath.h"
 
+FComplex::FComplex()
+{
+    real = 0.0;
+    imag = 0.0;
+}
+
 FComplex::FComplex(double r, double i)
 {
     real = r;
@@ -26,4 +32,18 @@ FComplex::FComplex(double r, double i)
 bool operator==(FComplex a, FComplex b)
 {
     return (a.real == b.real) && (a.imag == b.imag);
+}
+
+QString convertFComplexToString(FComplex v)
+{
+    if (v.imag < 0.0)
+        return QString::number(v.real, 'e') + "-i" + QString::number(-v.imag, 'e');
+    else
+        return QString::number(v.real, 'e') + "+i" + QString::number(v.imag, 'e');
+}
+
+void initializeFMath()
+{
+    qRegisterMetaType<FComplex>();
+    QMetaType::registerConverter<FComplex, QString>(convertFComplexToString);
 }
