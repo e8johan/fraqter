@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <QSpinBox>
 #include <QLineEdit>
+#include <QStatusBar>
 
 #include "newdialog.h"
 
@@ -39,6 +40,8 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
 
     m_fractalView = FractalFactory::instance()->createView(fractalId);
     setCentralWidget(m_fractalView);
+
+    ui->statusBar->addWidget(m_statusLabel = new QLabel(), 1);
 
     QFormLayout *layout = new QFormLayout(ui->propertiesDockContents);
     ui->propertiesDockContents->setLayout(layout);
@@ -83,6 +86,7 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
 
     connect(ui->actionFileNew, &QAction::triggered, this, &MainWindow::onNew);
     connect(ui->actionFileExit, &QAction::triggered, qApp, &QCoreApplication::quit);
+    connect(m_fractalView, &AbstractFractalView::statusBarUpdate, this, &MainWindow::onStatusBarUpdate);
 }
 
 MainWindow::~MainWindow()
@@ -94,4 +98,9 @@ void MainWindow::onNew()
 {
     NewDialog newDialog(this);
     newDialog.exec();
+}
+
+void MainWindow::onStatusBarUpdate(const QString &text)
+{
+    m_statusLabel->setText(text);
 }

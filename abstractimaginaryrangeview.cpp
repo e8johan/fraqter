@@ -28,7 +28,7 @@ AbstractImaginaryRangeView::AbstractImaginaryRangeView(QWidget *parent)
     , m_bottomRightCoord(2, 2)
     , m_maxIterations(1000)
 {
-
+    setMouseTracking(true);
 }
 
 FComplex AbstractImaginaryRangeView::topLeftCoord() const
@@ -95,12 +95,17 @@ void AbstractImaginaryRangeView::resizeEvent(QResizeEvent *)
     redrawBuffer();
 }
 
+void AbstractImaginaryRangeView::mouseMoveEvent(QMouseEvent *e)
+{
+    FComplex pos(double(e->pos().x())/double(width())*(m_bottomRightCoord.real-m_topLeftCoord.real)+m_topLeftCoord.real,
+                 double(e->pos().y())/double(height())*(m_bottomRightCoord.imag-m_topLeftCoord.imag)+m_topLeftCoord.imag);
+
+    emit statusBarUpdate(convertFComplexToString(pos));
+}
+
 void AbstractImaginaryRangeView::redrawBuffer()
 {
     m_buffer = QImage(size(), QImage::Format_ARGB32);
-
-    const QPair<double, double> m_min(m_topLeftCoord.real, m_topLeftCoord.imag);
-    const QPair<double, double> m_max(m_bottomRightCoord.real, m_bottomRightCoord.imag);
 
     for (int x=0; x<m_buffer.width(); ++x)
         for (int y=0; y<m_buffer.height(); ++y)

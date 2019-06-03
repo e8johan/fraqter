@@ -24,8 +24,12 @@
 class AbstractFractalView : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit AbstractFractalView(QWidget *parent = nullptr);
+
+signals:
+    void statusBarUpdate(const QString &);
 };
 
 #endif // ABSTRACTFRACTALVIEW_H

@@ -47,8 +47,9 @@ signals:
     void maxIterationsChanged(int maxIterations);
 
 protected:
-    void paintEvent(QPaintEvent*);
-    void resizeEvent(QResizeEvent*);
+    void paintEvent(QPaintEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
 
     void redrawBuffer();
 

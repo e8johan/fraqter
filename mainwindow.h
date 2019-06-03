@@ -21,6 +21,7 @@
 #include <QMainWindow>
 
 class AbstractFractalView;
+class QLabel;
 
 namespace Ui {
 class MainWindow;
@@ -37,10 +38,13 @@ public:
 private slots:
     void onNew();
 
+    void onStatusBarUpdate(const QString &);
+
 private:
     Ui::MainWindow *ui;
 
     AbstractFractalView *m_fractalView;
+    QLabel *m_statusLabel;
 };
 
 #endif // MAINWINDOW_H
