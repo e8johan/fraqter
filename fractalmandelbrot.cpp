@@ -17,7 +17,7 @@
  */
 #include "fractalmandelbrot.h"
 
-FractalMandelbrot::FractalMandelbrot(QWidget *parent) : AbstractImaginaryRangeView(parent)
+FractalMandelbrot::FractalMandelbrot(QWidget *parent) : AbstractImaginaryRangeEscapeView(parent)
 {
 
 }

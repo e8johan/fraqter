@@ -18,9 +18,9 @@
 #ifndef FRACTALJULIA_H
 #define FRACTALJULIA_H
 
-#include "abstractimaginaryrangeview.h"
+#include "abstractimaginaryrangeescapeview.h"
 
-class FractalJulia : public AbstractImaginaryRangeView
+class FractalJulia : public AbstractImaginaryRangeEscapeView
 {
     Q_OBJECT
 

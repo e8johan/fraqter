@@ -18,7 +18,7 @@
 #include "fractaljulia.h"
 
 FractalJulia::FractalJulia(QWidget *parent)
-    : AbstractImaginaryRangeView(parent)
+    : AbstractImaginaryRangeEscapeView(parent)
     , m_cValue(-0.8, 0.156)
 {
 

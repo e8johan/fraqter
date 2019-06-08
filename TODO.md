@@ -9,3 +9,4 @@ TODO list for Fraqter
 - Create colouring control, i.e. mapping the value of the fractal part (range 0 to 1) to a colour range
 - Implement FComplex editor widget
 - Move rendering to render thread - and make it possible to cancel current render job if needed
+- Pass size of view to renderBuffer, instead of accessing size of widget in renderBuffer

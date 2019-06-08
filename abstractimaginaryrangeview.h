@@ -27,40 +27,32 @@ class AbstractImaginaryRangeView : public AbstractFractalView
 
     Q_PROPERTY(FComplex topLeftCoord READ topLeftCoord WRITE setTopLeftCoord NOTIFY topLeftCoordChanged SCRIPTABLE true)
     Q_PROPERTY(FComplex bottomRightCoord READ bottomRightCoord WRITE setBottomRightCoord NOTIFY bottomRightCoordChanged SCRIPTABLE true)
-    Q_PROPERTY(int maxIterations READ maxIterations WRITE setMaxIterations NOTIFY maxIterationsChanged SCRIPTABLE true)
 
 public:
     explicit AbstractImaginaryRangeView(QWidget *parent = nullptr);
 
     FComplex topLeftCoord() const;
     FComplex bottomRightCoord() const;
-    int maxIterations() const;
 
 public slots:
     void setTopLeftCoord(FComplex topLeftCoord);
     void setBottomRightCoord(FComplex bottomRightCoord);
-    void setMaxIterations(int maxIterations);
 
 signals:
     void topLeftCoordChanged(FComplex topLeftCoord);
     void bottomRightCoordChanged(FComplex bottomRightCoord);
-    void maxIterationsChanged(int maxIterations);
 
 protected:
     void paintEvent(QPaintEvent*) override;
     void resizeEvent(QResizeEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;
 
-    void redrawBuffer();
-
-    virtual double iterate(const FComplex &) const = 0;
+    virtual void redrawBuffer() = 0;
+    virtual const QImage &buffer() const = 0;
 
 private:
-    QImage m_buffer;
-
     FComplex m_topLeftCoord;
     FComplex m_bottomRightCoord;
-    int m_maxIterations;
 };
 
 #endif // ABSTRACTIMAGINARYRANGEVIEW_H

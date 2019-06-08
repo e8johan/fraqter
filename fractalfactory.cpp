@@ -19,6 +19,7 @@
 
 #include "fractalmandelbrot.h"
 #include "fractaljulia.h"
+#include "fractalbuddabrot.h"
 
 FractalFactory *FractalFactory::instance()
 {
@@ -54,6 +55,8 @@ AbstractFractalView *FractalFactory::createView(const QString fractalId)
         return new FractalMandelbrot();
     else if (fractalId == QStringLiteral("Julia"))
         return new FractalJulia();
+    else if (fractalId == QStringLiteral("Buddabrot"))
+        return new FractalBuddabrot();
     else
         return nullptr;
 }
@@ -61,5 +64,6 @@ AbstractFractalView *FractalFactory::createView(const QString fractalId)
 FractalFactory::FractalFactory()
 {
     m_fractalIds << QStringLiteral("Mandelbrot")
-                 << QStringLiteral("Julia");
+                 << QStringLiteral("Julia")
+                 << QStringLiteral("Buddabrot");
 }

@@ -26,7 +26,6 @@ AbstractImaginaryRangeView::AbstractImaginaryRangeView(QWidget *parent)
     : AbstractFractalView(parent)
     , m_topLeftCoord(-2, -2)
     , m_bottomRightCoord(2, 2)
-    , m_maxIterations(1000)
 {
     setMouseTracking(true);
 }
@@ -39,11 +38,6 @@ FComplex AbstractImaginaryRangeView::topLeftCoord() const
 FComplex AbstractImaginaryRangeView::bottomRightCoord() const
 {
     return m_bottomRightCoord;
-}
-
-int AbstractImaginaryRangeView::maxIterations() const
-{
-    return m_maxIterations;
 }
 
 void AbstractImaginaryRangeView::setTopLeftCoord(FComplex topLeftCoord)
@@ -66,22 +60,12 @@ void AbstractImaginaryRangeView::setBottomRightCoord(FComplex bottomRightCoord)
     emit bottomRightCoordChanged(m_bottomRightCoord);
 }
 
-void AbstractImaginaryRangeView::setMaxIterations(int maxIterations)
-{
-    if (m_maxIterations == maxIterations)
-        return;
-
-    m_maxIterations = maxIterations;
-    redrawBuffer();
-    emit maxIterationsChanged(m_maxIterations);
-}
-
 void AbstractImaginaryRangeView::paintEvent(QPaintEvent *e)
 {
-    if (!m_buffer.isNull())
+    if (!buffer().isNull())
     {
         QPainter p(this);
-        p.drawImage(e->rect(), m_buffer, e->rect());
+        p.drawImage(e->rect(), buffer(), e->rect());
     }
     else {
         QPainter p(this);
@@ -103,20 +87,3 @@ void AbstractImaginaryRangeView::mouseMoveEvent(QMouseEvent *e)
     emit statusBarUpdate(convertFComplexToString(pos));
 }
 
-void AbstractImaginaryRangeView::redrawBuffer()
-{
-    m_buffer = QImage(size(), QImage::Format_ARGB32);
-
-    for (int x=0; x<m_buffer.width(); ++x)
-        for (int y=0; y<m_buffer.height(); ++y)
-        {
-            FComplex coord(double(x)/double(m_buffer.width())*(m_bottomRightCoord.real-m_topLeftCoord.real)+m_topLeftCoord.real, double(y)/double(m_buffer.height())*(m_bottomRightCoord.imag-m_topLeftCoord.imag)+m_topLeftCoord.imag);
-            double f = iterate(coord);
-            QColor color = QColor(0, 0, 0);
-            if (f < 255.0 / 256.0)
-                color = QColor(int(f*255), int(f*255), int((1.0-f)*64));
-            m_buffer.setPixelColor(x, y, color);
-        }
-
-    update();
-}

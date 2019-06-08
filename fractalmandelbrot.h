@@ -18,9 +18,9 @@
 #ifndef FRACTALMANDELBROT_H
 #define FRACTALMANDELBROT_H
 
-#include "abstractimaginaryrangeview.h"
+#include "abstractimaginaryrangeescapeview.h"
 
-class FractalMandelbrot : public AbstractImaginaryRangeView
+class FractalMandelbrot : public AbstractImaginaryRangeEscapeView
 {
 public:
     explicit FractalMandelbrot(QWidget *parent = nullptr);
