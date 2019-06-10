@@ -24,7 +24,7 @@ class FractalJulia : public AbstractImaginaryRangeEscapeView
 {
     Q_OBJECT
 
-    Q_PROPERTY(FComplex c READ cValue WRITE setCValue NOTIFY cValueChanged SCRIPTABLE true)
+    Q_PROPERTY(FComplex c READ cValue WRITE setCValue NOTIFY cValueChanged)
 
 public:
     explicit FractalJulia(QWidget *parent = nullptr);

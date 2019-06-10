@@ -17,7 +17,19 @@
  */
 #include "abstractfractalview.h"
 
-AbstractFractalView::AbstractFractalView(QWidget *parent) : QWidget(parent)
+AbstractFractalView::AbstractFractalView(QWidget *parent)
+    : QWidget(parent)
+    , m_autoRedraw(true)
 {
 
+}
+
+bool AbstractFractalView::autoRedraw() const
+{
+    return m_autoRedraw;
+}
+
+void AbstractFractalView::setAutoRedraw(bool autoRedraw)
+{
+    m_autoRedraw = autoRedraw;
 }

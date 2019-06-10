@@ -26,6 +26,8 @@
 #include <QSpinBox>
 #include <QLineEdit>
 #include <QStatusBar>
+#include <QCheckBox>
+#include <QPushButton>
 
 #include "newdialog.h"
 
@@ -97,6 +99,13 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
             layout->addRow(l, editor);
         }
     }
+
+    QCheckBox *autoRedraw = new QCheckBox(tr("Auto redraw"), ui->propertiesDockContents);
+    autoRedraw->setChecked(m_fractalView->autoRedraw());
+    QPushButton *forceRedraw = new QPushButton(tr("Redraw"), ui->propertiesDockContents);
+    connect(autoRedraw, &QCheckBox::stateChanged, m_fractalView, &AbstractFractalView::setAutoRedraw);
+    connect(forceRedraw, &QPushButton::clicked, m_fractalView, &AbstractFractalView::forceRedraw);
+    layout->addRow(autoRedraw, forceRedraw);
 
     connect(ui->actionFileNew, &QAction::triggered, this, &MainWindow::onNew);
     connect(ui->actionFileExit, &QAction::triggered, qApp, &QCoreApplication::quit);

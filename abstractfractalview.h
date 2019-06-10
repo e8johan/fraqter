@@ -25,11 +25,23 @@ class AbstractFractalView : public QWidget
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool autoRedraw READ autoRedraw WRITE setAutoRedraw NOTIFY autoRedrawChanged SCRIPTABLE false)
+
 public:
     explicit AbstractFractalView(QWidget *parent = nullptr);
+    bool autoRedraw() const;
+
+public slots:
+    virtual void forceRedraw() = 0;
+    void setAutoRedraw(bool autoRedraw);
 
 signals:
+    void autoRedrawChanged(bool autoRedraw);
+
     void statusBarUpdate(const QString &);
+
+private:
+    bool m_autoRedraw;
 };
 
 #endif // ABSTRACTFRACTALVIEW_H

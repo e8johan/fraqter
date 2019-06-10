@@ -7,7 +7,7 @@ class AbstractImaginaryRangeEscapeView : public AbstractImaginaryRangeView
 {
     Q_OBJECT
 
-    Q_PROPERTY(int maxIterations READ maxIterations WRITE setMaxIterations NOTIFY maxIterationsChanged SCRIPTABLE true)
+    Q_PROPERTY(int maxIterations READ maxIterations WRITE setMaxIterations NOTIFY maxIterationsChanged)
 
 public:
     explicit AbstractImaginaryRangeEscapeView(QWidget *parent = nullptr);
@@ -16,6 +16,7 @@ public:
 
 public slots:
     void setMaxIterations(int maxIterations);
+    virtual void forceRedraw() override;
 
 signals:
     void maxIterationsChanged(int maxIterations);

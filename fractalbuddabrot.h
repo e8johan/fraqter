@@ -17,6 +17,8 @@ public:
     int maxIterations() const;
 
 public slots:
+    virtual void forceRedraw() override;
+
     void setIterationsFactor(qreal iterationsFactor);
     void setMaxIterations(int maxIterations);
 

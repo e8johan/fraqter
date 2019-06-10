@@ -18,8 +18,14 @@ void AbstractImaginaryRangeEscapeView::setMaxIterations(int maxIterations)
         return;
 
     m_maxIterations = maxIterations;
-    redrawBuffer();
+    if (autoRedraw())
+        redrawBuffer();
     emit maxIterationsChanged(m_maxIterations);
+}
+
+void AbstractImaginaryRangeEscapeView::forceRedraw()
+{
+    redrawBuffer();
 }
 
 const QImage &AbstractImaginaryRangeEscapeView::buffer() const

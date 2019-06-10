@@ -46,7 +46,8 @@ void AbstractImaginaryRangeView::setTopLeftCoord(FComplex topLeftCoord)
         return;
 
     m_topLeftCoord = topLeftCoord;
-    redrawBuffer();
+    if (autoRedraw())
+        redrawBuffer();
     emit topLeftCoordChanged(m_topLeftCoord);
 }
 
@@ -56,7 +57,8 @@ void AbstractImaginaryRangeView::setBottomRightCoord(FComplex bottomRightCoord)
         return;
 
     m_bottomRightCoord = bottomRightCoord;
-    redrawBuffer();
+    if (autoRedraw())
+        redrawBuffer();
     emit bottomRightCoordChanged(m_bottomRightCoord);
 }
 
@@ -76,7 +78,8 @@ void AbstractImaginaryRangeView::paintEvent(QPaintEvent *e)
 
 void AbstractImaginaryRangeView::resizeEvent(QResizeEvent *)
 {
-    redrawBuffer();
+    if (autoRedraw())
+        redrawBuffer();
 }
 
 void AbstractImaginaryRangeView::mouseMoveEvent(QMouseEvent *e)

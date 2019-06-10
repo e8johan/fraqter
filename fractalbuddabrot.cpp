@@ -23,14 +23,19 @@ int FractalBuddabrot::maxIterations() const
     return m_maxIterations;
 }
 
+void FractalBuddabrot::forceRedraw()
+{
+    redrawBuffer();
+}
+
 void FractalBuddabrot::setIterationsFactor(qreal iterationsFactor)
 {
-    qWarning("Floating point comparison needs context sanity check");
     if (qFuzzyCompare(m_iterationsFactor, iterationsFactor))
         return;
 
     m_iterationsFactor = iterationsFactor;
-    redrawBuffer();
+    if (autoRedraw())
+        redrawBuffer();
     emit iterationsFactorChanged(m_iterationsFactor);
 }
 
@@ -40,7 +45,8 @@ void FractalBuddabrot::setMaxIterations(int maxIterations)
         return;
 
     m_maxIterations = maxIterations;
-    redrawBuffer();
+    if (autoRedraw())
+        redrawBuffer();
     emit maxIterationsChanged(m_maxIterations);
 }
 
@@ -100,6 +106,8 @@ void FractalBuddabrot::redrawBuffer()
             QColor color = QColor(int(255*f), int(255*f), int(64*(1.0-f)));
             m_buffer.setPixelColor(x, y, color);
         }
+
+    update();
 }
 
 const QImage &FractalBuddabrot::buffer() const

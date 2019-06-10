@@ -25,8 +25,8 @@ class AbstractImaginaryRangeView : public AbstractFractalView
 {
     Q_OBJECT
 
-    Q_PROPERTY(FComplex topLeftCoord READ topLeftCoord WRITE setTopLeftCoord NOTIFY topLeftCoordChanged SCRIPTABLE true)
-    Q_PROPERTY(FComplex bottomRightCoord READ bottomRightCoord WRITE setBottomRightCoord NOTIFY bottomRightCoordChanged SCRIPTABLE true)
+    Q_PROPERTY(FComplex topLeftCoord READ topLeftCoord WRITE setTopLeftCoord NOTIFY topLeftCoordChanged)
+    Q_PROPERTY(FComplex bottomRightCoord READ bottomRightCoord WRITE setBottomRightCoord NOTIFY bottomRightCoordChanged)
 
 public:
     explicit AbstractImaginaryRangeView(QWidget *parent = nullptr);
