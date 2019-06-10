@@ -71,6 +71,20 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
                             this->m_fractalView->setProperty(this->m_fractalView->metaObject()->property(i).name(), newValue);
                         } );
 
+                editor = sb;                
+            }
+            else if (QString(mo->property(i).typeName()) == "double" ||
+                     QString(mo->property(i).typeName()) == "float")
+            {
+                QDoubleSpinBox *sb = new QDoubleSpinBox(ui->propertiesDockContents);
+                sb->setRange(0.1, 100.0);
+                sb->setSingleStep(0.1);
+                sb->setValue(m_fractalView->property(mo->property(i).name()).toDouble());
+                connect(sb, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                        [this, i](double newValue) {
+                            this->m_fractalView->setProperty(this->m_fractalView->metaObject()->property(i).name(), newValue);
+                        } );
+
                 editor = sb;
             }
 

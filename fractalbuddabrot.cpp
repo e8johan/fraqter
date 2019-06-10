@@ -30,6 +30,7 @@ void FractalBuddabrot::setIterationsFactor(qreal iterationsFactor)
         return;
 
     m_iterationsFactor = iterationsFactor;
+    redrawBuffer();
     emit iterationsFactorChanged(m_iterationsFactor);
 }
 
@@ -39,6 +40,7 @@ void FractalBuddabrot::setMaxIterations(int maxIterations)
         return;
 
     m_maxIterations = maxIterations;
+    redrawBuffer();
     emit maxIterationsChanged(m_maxIterations);
 }
 
