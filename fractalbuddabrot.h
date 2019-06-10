@@ -7,8 +7,22 @@ class FractalBuddabrot : public AbstractImaginaryRangeView
 {
     Q_OBJECT
 
+    Q_PROPERTY(qreal iterationsFactor READ iterationsFactor WRITE setIterationsFactor NOTIFY iterationsFactorChanged)
+    Q_PROPERTY(int maxIterations READ maxIterations WRITE setMaxIterations NOTIFY maxIterationsChanged)
+
 public:
     explicit FractalBuddabrot(QWidget *parent = nullptr);
+
+    qreal iterationsFactor() const;
+    int maxIterations() const;
+
+public slots:
+    void setIterationsFactor(qreal iterationsFactor);
+    void setMaxIterations(int maxIterations);
+
+signals:
+    void iterationsFactorChanged(qreal iterationsFactor);
+    void maxIterationsChanged(int maxIterations);
 
 protected:
     virtual void redrawBuffer() override;
@@ -16,6 +30,8 @@ protected:
 
 private:
     QImage m_buffer;
+    qreal m_iterationsFactor;
+    int m_maxIterations;
 };
 
 #endif // FRACTALBUDDABROT_H
