@@ -20,6 +20,8 @@
 #include "fractalmandelbrot.h"
 #include "fractaljulia.h"
 #include "fractalbuddabrot.h"
+#include "fractaldejongattractor.h"
+#include "fractalcliffordattractor.h"
 
 FractalFactory *FractalFactory::instance()
 {
@@ -57,6 +59,10 @@ AbstractFractalView *FractalFactory::createView(const QString fractalId)
         return new FractalJulia();
     else if (fractalId == QStringLiteral("Buddabrot"))
         return new FractalBuddabrot();
+    else if (fractalId == QStringLiteral("de Jong Attractor"))
+        return new FractalDeJongAttractor();
+    else if (fractalId == QStringLiteral("Clifford Attractor"))
+        return new FractalCliffordAttractor();
     else
         return nullptr;
 }
@@ -65,5 +71,7 @@ FractalFactory::FractalFactory()
 {
     m_fractalIds << QStringLiteral("Mandelbrot")
                  << QStringLiteral("Julia")
-                 << QStringLiteral("Buddabrot");
+                 << QStringLiteral("Buddabrot")
+                 << QStringLiteral("de Jong Attractor")
+                 << QStringLiteral("Clifford Attractor");
 }

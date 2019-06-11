@@ -15,45 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "fmath.h"
+#ifndef FRACTALDEJONGATTRACTOR_H
+#define FRACTALDEJONGATTRACTOR_H
 
-FComplex::FComplex()
-{
-    real = 0.0;
-    imag = 0.0;
-}
+#include "abstractattractorview.h"
 
-FComplex::FComplex(double r, double i)
+class FractalDeJongAttractor : public AbstractAttractorView
 {
-    real = r;
-    imag = i;
-}
+    Q_OBJECT
 
-bool operator==(FComplex a, FComplex b)
-{
-    return (a.real == b.real) && (a.imag == b.imag);
-}
+public:
+    explicit FractalDeJongAttractor(QWidget *parent = nullptr);
 
-QString convertFComplexToString(FComplex v)
-{
-    if (v.imag < 0.0)
-        return QString::number(v.real, 'e') + "-i" + QString::number(-v.imag, 'e');
-    else
-        return QString::number(v.real, 'e') + "+i" + QString::number(v.imag, 'e');
-}
+protected:
+    virtual void iterate(FReal x, FReal y, FReal *nx, FReal *ny) const override;
 
-void initializeFMath()
-{
-    qRegisterMetaType<FComplex>();
-    QMetaType::registerConverter<FComplex, QString>(convertFComplexToString);
-}
+private:
+    FReal m_factors[4];
+};
 
-FReal f_cos(FReal x)
-{
-    return cos(x);
-}
-
-FReal f_sin(FReal x)
-{
-    return sin(x);
-}
+#endif // FRACTALDEJONGATTRACTOR_H

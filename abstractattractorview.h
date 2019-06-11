@@ -15,45 +15,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef ABSTRACTATTRACTORVIEW_H
+#define ABSTRACTATTRACTORVIEW_H
+
+#include "abstractfractalview.h"
 #include "fmath.h"
 
-FComplex::FComplex()
-{
-    real = 0.0;
-    imag = 0.0;
-}
+#include <QImage>
 
-FComplex::FComplex(double r, double i)
+class AbstractAttractorView : public AbstractFractalView
 {
-    real = r;
-    imag = i;
-}
+public:
+    explicit AbstractAttractorView(QWidget *parent = nullptr);
 
-bool operator==(FComplex a, FComplex b)
-{
-    return (a.real == b.real) && (a.imag == b.imag);
-}
+protected:
+    void paintEvent(QPaintEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
 
-QString convertFComplexToString(FComplex v)
-{
-    if (v.imag < 0.0)
-        return QString::number(v.real, 'e') + "-i" + QString::number(-v.imag, 'e');
-    else
-        return QString::number(v.real, 'e') + "+i" + QString::number(v.imag, 'e');
-}
+    virtual void forceRedraw() override;
+    void redrawBuffer();
+    virtual void iterate(FReal x, FReal y, FReal *nx, FReal *ny) const = 0;
 
-void initializeFMath()
-{
-    qRegisterMetaType<FComplex>();
-    QMetaType::registerConverter<FComplex, QString>(convertFComplexToString);
-}
+private:
+    QImage m_buffer;
+};
 
-FReal f_cos(FReal x)
-{
-    return cos(x);
-}
-
-FReal f_sin(FReal x)
-{
-    return sin(x);
-}
+#endif // ABSTRACTATTRACTORVIEW_H

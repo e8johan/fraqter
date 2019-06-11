@@ -15,45 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "fmath.h"
+#ifndef FRACTALCLIFFORDATTRACTOR_H
+#define FRACTALCLIFFORDATTRACTOR_H
 
-FComplex::FComplex()
-{
-    real = 0.0;
-    imag = 0.0;
-}
+#include "abstractattractorview.h"
 
-FComplex::FComplex(double r, double i)
+class FractalCliffordAttractor : public AbstractAttractorView
 {
-    real = r;
-    imag = i;
-}
+public:
+    explicit FractalCliffordAttractor(QWidget *parent = nullptr);
 
-bool operator==(FComplex a, FComplex b)
-{
-    return (a.real == b.real) && (a.imag == b.imag);
-}
+protected:
+    virtual void iterate(FReal x, FReal y, FReal *nx, FReal *ny) const override;
 
-QString convertFComplexToString(FComplex v)
-{
-    if (v.imag < 0.0)
-        return QString::number(v.real, 'e') + "-i" + QString::number(-v.imag, 'e');
-    else
-        return QString::number(v.real, 'e') + "+i" + QString::number(v.imag, 'e');
-}
+private:
+    FReal m_factors[4];
+};
 
-void initializeFMath()
-{
-    qRegisterMetaType<FComplex>();
-    QMetaType::registerConverter<FComplex, QString>(convertFComplexToString);
-}
-
-FReal f_cos(FReal x)
-{
-    return cos(x);
-}
-
-FReal f_sin(FReal x)
-{
-    return sin(x);
-}
+#endif // FRACTALCLIFFORDATTRACTOR_H

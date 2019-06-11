@@ -15,45 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "fmath.h"
+#include "fractaldejongattractor.h"
 
-FComplex::FComplex()
+FractalDeJongAttractor::FractalDeJongAttractor(QWidget *parent)
+    : AbstractAttractorView(parent)
+    , m_factors { 1.641, 1.902, 0.316, 1.525 }
 {
-    real = 0.0;
-    imag = 0.0;
+
 }
 
-FComplex::FComplex(double r, double i)
+void FractalDeJongAttractor::iterate(FReal x, FReal y, FReal *nx, FReal *ny) const
 {
-    real = r;
-    imag = i;
-}
-
-bool operator==(FComplex a, FComplex b)
-{
-    return (a.real == b.real) && (a.imag == b.imag);
-}
-
-QString convertFComplexToString(FComplex v)
-{
-    if (v.imag < 0.0)
-        return QString::number(v.real, 'e') + "-i" + QString::number(-v.imag, 'e');
-    else
-        return QString::number(v.real, 'e') + "+i" + QString::number(v.imag, 'e');
-}
-
-void initializeFMath()
-{
-    qRegisterMetaType<FComplex>();
-    QMetaType::registerConverter<FComplex, QString>(convertFComplexToString);
-}
-
-FReal f_cos(FReal x)
-{
-    return cos(x);
-}
-
-FReal f_sin(FReal x)
-{
-    return sin(x);
+    *nx = f_sin(m_factors[0]*y) - f_cos(m_factors[1]*x);
+    *ny = f_sin(m_factors[2]*x) - f_cos(m_factors[3]*y);
 }

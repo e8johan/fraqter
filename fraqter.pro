@@ -35,7 +35,10 @@ SOURCES += \
     fractalfactory.cpp \
     fmath.cpp \
     fractalbuddabrot.cpp \
-    abstractimaginaryrangeescapeview.cpp
+    abstractimaginaryrangeescapeview.cpp \
+    abstractattractorview.cpp \
+    fractaldejongattractor.cpp \
+    fractalcliffordattractor.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,7 +50,10 @@ HEADERS += \
     fractalfactory.h \
     fmath.h \
     fractalbuddabrot.h \
-    abstractimaginaryrangeescapeview.h
+    abstractimaginaryrangeescapeview.h \
+    abstractattractorview.h \
+    fractaldejongattractor.h \
+    fractalcliffordattractor.h
 
 FORMS += \
         mainwindow.ui \

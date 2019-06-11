@@ -21,13 +21,20 @@
 #include <QMetaType>
 #include <QString>
 
+#include <math.h>
+
+typedef double FReal;
+
 struct FComplex
 {
     FComplex();
     FComplex(double, double);
 
-    double real, imag;
+    FReal real, imag;
 };
+
+FReal f_sin(FReal x);
+FReal f_cos(FReal x);
 
 Q_DECLARE_METATYPE(FComplex)
 
