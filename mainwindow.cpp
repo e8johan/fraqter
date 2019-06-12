@@ -63,10 +63,11 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
              */
             QLabel *l = new QLabel(mo->property(i).name(), ui->propertiesDockContents);
             QWidget *editor = nullptr;
-            if (QString(mo->property(i).typeName()) == "int")
+            if (QString(mo->property(i).typeName()) == "int" ||
+                QString(mo->property(i).typeName()) == "long")
             {
                 QSpinBox *sb = new QSpinBox(ui->propertiesDockContents);
-                sb->setRange(1, 5000);
+                sb->setRange(1, 1000000000);
                 sb->setValue(m_fractalView->property(mo->property(i).name()).toInt());
                 connect(sb, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
                         [this, i](int newValue) {

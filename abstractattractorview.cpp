@@ -6,7 +6,24 @@
 
 AbstractAttractorView::AbstractAttractorView(QWidget *parent)
     : AbstractFractalView(parent)
+    , m_iterations(1000000)
 {
+}
+
+long AbstractAttractorView::iterations() const
+{
+    return m_iterations;
+}
+
+void AbstractAttractorView::setIterations(long iterations)
+{
+    if (m_iterations == iterations)
+        return;
+
+    m_iterations = iterations;
+    if (autoRedraw())
+        redrawBuffer();
+    emit iterationsChanged(m_iterations);
 }
 
 void AbstractAttractorView::paintEvent(QPaintEvent *e)
@@ -44,7 +61,7 @@ void AbstractAttractorView::redrawBuffer()
     m_buffer = QImage(size(), QImage::Format_ARGB32);
 
     QVector<QVector<int> > counterBuffer(m_buffer.width(), QVector<int>(m_buffer.height()));
-    long long iterations = 100000;
+    long iterations = m_iterations;
     int maxHits = 1;
 
     FReal x, y, nx, ny;
@@ -71,7 +88,7 @@ void AbstractAttractorView::redrawBuffer()
     for (int px=0; px<m_buffer.width(); ++px)
         for (int py=0; py<m_buffer.height(); ++py)
         {
-            qreal f = qreal(counterBuffer[px][py])/qreal(maxHits);
+            qreal f = log10((counterBuffer[px][py]==0?1.0:1.2)+8.8*qreal(counterBuffer[px][py])/qreal(maxHits));
             QColor color = QColor(int(255*f), int(255*f), int(64*(1.0-f)));
             m_buffer.setPixelColor(px, py, color);
         }

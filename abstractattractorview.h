@@ -25,8 +25,20 @@
 
 class AbstractAttractorView : public AbstractFractalView
 {
+    Q_OBJECT
+
+    Q_PROPERTY(long iterations READ iterations WRITE setIterations NOTIFY iterationsChanged)
+
 public:
     explicit AbstractAttractorView(QWidget *parent = nullptr);
+
+    long iterations() const;
+
+public slots:
+    void setIterations(long iterations);
+
+signals:
+    void iterationsChanged(long iterations);
 
 protected:
     void paintEvent(QPaintEvent*) override;
@@ -39,6 +51,7 @@ protected:
 
 private:
     QImage m_buffer;
+    long m_iterations;
 };
 
 #endif // ABSTRACTATTRACTORVIEW_H
