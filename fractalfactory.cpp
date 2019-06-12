@@ -22,6 +22,7 @@
 #include "fractalbuddabrot.h"
 #include "fractaldejongattractor.h"
 #include "fractalcliffordattractor.h"
+#include "fractalifs.h"
 
 FractalFactory *FractalFactory::instance()
 {
@@ -63,6 +64,8 @@ AbstractFractalView *FractalFactory::createView(const QString fractalId)
         return new FractalDeJongAttractor();
     else if (fractalId == QStringLiteral("Clifford Attractor"))
         return new FractalCliffordAttractor();
+    else if (fractalId == QStringLiteral("IFS Fern"))
+        return new FractalIFS();
     else
         return nullptr;
 }
@@ -73,5 +76,6 @@ FractalFactory::FractalFactory()
                  << QStringLiteral("Julia")
                  << QStringLiteral("Buddabrot")
                  << QStringLiteral("de Jong Attractor")
-                 << QStringLiteral("Clifford Attractor");
+                 << QStringLiteral("Clifford Attractor")
+                 << QStringLiteral("IFS Fern");
 }

@@ -38,7 +38,8 @@ SOURCES += \
     abstractimaginaryrangeescapeview.cpp \
     abstractattractorview.cpp \
     fractaldejongattractor.cpp \
-    fractalcliffordattractor.cpp
+    fractalcliffordattractor.cpp \
+    fractalifs.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     abstractimaginaryrangeescapeview.h \
     abstractattractorview.h \
     fractaldejongattractor.h \
-    fractalcliffordattractor.h
+    fractalcliffordattractor.h \
+    fractalifs.h
 
 FORMS += \
         mainwindow.ui \
