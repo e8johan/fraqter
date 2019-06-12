@@ -7,7 +7,6 @@
 AbstractAttractorView::AbstractAttractorView(QWidget *parent)
     : AbstractFractalView(parent)
 {
-    setAutoRedraw(false);
 }
 
 void AbstractAttractorView::paintEvent(QPaintEvent *e)
