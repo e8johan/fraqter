@@ -20,6 +20,7 @@
 
 #include <QItemSelectionModel>
 #include <QPushButton>
+#include <QSortFilterProxyModel>
 
 #include "mainwindow.h"
 #include "fractalfactory.h"
@@ -29,7 +30,12 @@ NewDialog::NewDialog(QWidget *parent) :
     ui(new Ui::NewDialog)
 {
     ui->setupUi(this);
-    ui->listViewFractals->setModel(FractalFactory::instance());
+
+    QSortFilterProxyModel *alphabeticalModel = new QSortFilterProxyModel(this);
+    alphabeticalModel->setSourceModel(FractalFactory::instance());
+    alphabeticalModel->sort(0, Qt::AscendingOrder);
+
+    ui->listViewFractals->setModel(alphabeticalModel);
 
     connect(ui->listViewFractals->selectionModel(), &QItemSelectionModel::selectionChanged, this, &NewDialog::onFractalChanged);
     connect(ui->listViewFractals, &QAbstractItemView::doubleClicked, this, &NewDialog::onDoubleClickedItem);
