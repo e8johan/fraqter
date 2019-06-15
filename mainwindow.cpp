@@ -41,6 +41,8 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
     ui->setupUi(this);
 
     m_fractalView = FractalFactory::instance()->createView(fractalId);
+    if (m_fractalView == nullptr)
+        qFatal("No fractal view instantiated!");
     setCentralWidget(m_fractalView);
 
     ui->statusBar->addWidget(m_statusLabel = new QLabel(), 1);
