@@ -36,6 +36,9 @@ struct FComplex
 FReal f_sin(FReal x);
 FReal f_cos(FReal x);
 
+FReal f_min(FReal, FReal);
+FReal f_max(FReal, FReal);
+
 Q_DECLARE_METATYPE(FComplex)
 
 bool operator==(FComplex a, FComplex b);

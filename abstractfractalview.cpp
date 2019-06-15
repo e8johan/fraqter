@@ -29,6 +29,21 @@ bool AbstractFractalView::autoRedraw() const
     return m_autoRedraw;
 }
 
+bool AbstractFractalView::canZoom() const
+{
+    return false;
+}
+
+void AbstractFractalView::zoomIn()
+{
+    qWarning("AbstractFractalView::zoomIn - should never be called.");
+}
+
+void AbstractFractalView::zoomOut()
+{
+    qWarning("AbstractFractalView::zoomOut - should never be called.");
+}
+
 void AbstractFractalView::setAutoRedraw(bool autoRedraw)
 {
     m_autoRedraw = autoRedraw;

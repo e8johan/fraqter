@@ -57,3 +57,19 @@ FReal f_sin(FReal x)
 {
     return sin(x);
 }
+
+FReal f_min(FReal a, FReal b)
+{
+    if (a < b)
+        return a;
+    else
+        return b;
+}
+
+FReal f_max(FReal a, FReal b)
+{
+    if (a > b)
+        return a;
+    else
+        return b;
+}

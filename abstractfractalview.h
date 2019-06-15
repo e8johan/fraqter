@@ -31,8 +31,12 @@ public:
     explicit AbstractFractalView(QWidget *parent = nullptr);
     bool autoRedraw() const;
 
+    virtual bool canZoom() const;
+
 public slots:
     virtual void forceRedraw() = 0;
+    virtual void zoomIn();
+    virtual void zoomOut();
     void setAutoRedraw(bool autoRedraw);
 
 signals:

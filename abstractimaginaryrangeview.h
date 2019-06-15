@@ -34,6 +34,10 @@ public:
     FComplex topLeftCoord() const;
     FComplex bottomRightCoord() const;
 
+    virtual bool canZoom() const override;
+    virtual void zoomIn() override;
+    virtual void zoomOut() override;
+
 public slots:
     void setTopLeftCoord(FComplex topLeftCoord);
     void setBottomRightCoord(FComplex bottomRightCoord);
@@ -46,13 +50,21 @@ protected:
     void paintEvent(QPaintEvent*) override;
     void resizeEvent(QResizeEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;
+    void mousePressEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
 
     virtual void redrawBuffer() = 0;
     virtual const QImage &buffer() const = 0;
 
 private:
+    FComplex posToComplex(int x, int y) const;
+    QRect rectFromPoints(const QPoint &a, const QPoint &b) const;
+
     FComplex m_topLeftCoord;
     FComplex m_bottomRightCoord;
+
+    bool m_isDragging;
+    QPoint m_dragStart, m_dragLast;
 };
 
 #endif // ABSTRACTIMAGINARYRANGEVIEW_H

@@ -26,6 +26,7 @@ AbstractImaginaryRangeView::AbstractImaginaryRangeView(QWidget *parent)
     : AbstractFractalView(parent)
     , m_topLeftCoord(-2, -2)
     , m_bottomRightCoord(2, 2)
+    , m_isDragging(false)
 {
     setMouseTracking(true);
 }
@@ -38,6 +39,11 @@ FComplex AbstractImaginaryRangeView::topLeftCoord() const
 FComplex AbstractImaginaryRangeView::bottomRightCoord() const
 {
     return m_bottomRightCoord;
+}
+
+bool AbstractImaginaryRangeView::canZoom() const
+{
+    return true;
 }
 
 void AbstractImaginaryRangeView::setTopLeftCoord(FComplex topLeftCoord)
@@ -62,12 +68,52 @@ void AbstractImaginaryRangeView::setBottomRightCoord(FComplex bottomRightCoord)
     emit bottomRightCoordChanged(m_bottomRightCoord);
 }
 
+void AbstractImaginaryRangeView::zoomIn()
+{
+    FComplex center = FComplex((m_topLeftCoord.real+m_bottomRightCoord.real)/2.0, (m_topLeftCoord.imag+m_bottomRightCoord.imag)/2.0);
+    FReal width = m_bottomRightCoord.real-m_topLeftCoord.real;
+    FReal height = m_bottomRightCoord.imag - m_topLeftCoord.imag;
+
+    // Half width (as we both add and subtract from center
+    // New half width is one quarter, which means a 2x factor
+    width /= 4.0;
+    height /= 4.0;
+
+    m_topLeftCoord = FComplex(center.real-width, center.imag-height);
+    m_bottomRightCoord = FComplex(center.real+width, center.imag+height);
+
+    // TODO what about autoredraw?
+    redrawBuffer();
+}
+
+void AbstractImaginaryRangeView::zoomOut()
+{
+    FComplex center = FComplex((m_topLeftCoord.real+m_bottomRightCoord.real)/2.0, (m_topLeftCoord.imag+m_bottomRightCoord.imag)/2.0);
+    FReal width = m_bottomRightCoord.real-m_topLeftCoord.real;
+    FReal height = m_bottomRightCoord.imag - m_topLeftCoord.imag;
+
+    // Half width (as we both add and subtract from center
+    // New half width old width, which means a 2x factor
+
+    m_topLeftCoord = FComplex(center.real-width, center.imag-height);
+    m_bottomRightCoord = FComplex(center.real+width, center.imag+height);
+
+    // TODO what about autoredraw?
+    redrawBuffer();
+}
+
 void AbstractImaginaryRangeView::paintEvent(QPaintEvent *e)
 {
     if (!buffer().isNull())
     {
         QPainter p(this);
         p.drawImage(e->rect(), buffer(), e->rect());
+
+        if (m_isDragging)
+        {
+            p.setPen(Qt::red);
+            p.drawRect(rectFromPoints(m_dragStart, m_dragLast));
+        }
     }
     else {
         QPainter p(this);
@@ -78,15 +124,55 @@ void AbstractImaginaryRangeView::paintEvent(QPaintEvent *e)
 
 void AbstractImaginaryRangeView::resizeEvent(QResizeEvent *)
 {
+    // TODO can we stretch the current buffer?
     if (autoRedraw())
         redrawBuffer();
 }
 
 void AbstractImaginaryRangeView::mouseMoveEvent(QMouseEvent *e)
 {
-    FComplex pos(double(e->pos().x())/double(width())*(m_bottomRightCoord.real-m_topLeftCoord.real)+m_topLeftCoord.real,
-                 double(e->pos().y())/double(height())*(m_bottomRightCoord.imag-m_topLeftCoord.imag)+m_topLeftCoord.imag);
+    emit statusBarUpdate(convertFComplexToString(posToComplex(e->pos().x(), e->pos().y())));
 
-    emit statusBarUpdate(convertFComplexToString(pos));
+    if (m_isDragging)
+    {
+        QRect updateRect = rectFromPoints(m_dragStart, m_dragLast).united(rectFromPoints(m_dragStart, e->pos()));
+        updateRect.setWidth(updateRect.width()+1);
+        updateRect.setHeight(updateRect.height()+1);
+        update(updateRect);
+        m_dragLast = e->pos();
+    }
+}
+
+void AbstractImaginaryRangeView::mousePressEvent(QMouseEvent *e)
+{
+    m_dragLast = m_dragStart = e->pos();
+    m_isDragging = true;
+}
+
+void AbstractImaginaryRangeView::mouseReleaseEvent(QMouseEvent *e)
+{
+    FComplex start = posToComplex(m_dragStart.x(), m_dragStart.y());
+    FComplex end = posToComplex(e->pos().x(), e->pos().y());
+
+    m_isDragging = false;
+    update(QRect(m_dragStart, m_dragLast).intersected(QRect(m_dragStart, e->pos())));
+
+    m_topLeftCoord = FComplex(f_min(start.real, end.real), f_min(start.imag, end.imag));
+    m_bottomRightCoord = FComplex(f_max(start.real, end.real), f_max(start.imag, end.imag));
+
+    // TODO what about autoredraw?
+    redrawBuffer();
+}
+
+FComplex AbstractImaginaryRangeView::posToComplex(int x, int y) const
+{
+    return FComplex(double(x)/double(width())*(m_bottomRightCoord.real-m_topLeftCoord.real)+m_topLeftCoord.real,
+                    double(y)/double(height())*(m_bottomRightCoord.imag-m_topLeftCoord.imag)+m_topLeftCoord.imag);
+}
+
+QRect AbstractImaginaryRangeView::rectFromPoints(const QPoint &a, const QPoint &b) const
+{
+    return QRect(QPoint(qMin(a.x(), b.x()), qMin(a.y(), b.y())),
+                 QPoint(qMax(a.x(), b.x()), qMax(a.y(), b.y())));
 }
 

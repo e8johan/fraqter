@@ -112,6 +112,16 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
 
     connect(ui->actionFileNew, &QAction::triggered, this, &MainWindow::onNew);
     connect(ui->actionFileExit, &QAction::triggered, qApp, &QCoreApplication::quit);
+    if (m_fractalView->canZoom())
+    {
+        connect(ui->actionZoomIn, &QAction::triggered, m_fractalView, &AbstractFractalView::zoomIn);
+        connect(ui->actionZoomOut, &QAction::triggered, m_fractalView, &AbstractFractalView::zoomOut);
+    }
+    else
+    {
+        ui->actionZoomIn->setEnabled(false);
+        ui->actionZoomOut->setEnabled(false);
+    }
     connect(m_fractalView, &AbstractFractalView::statusBarUpdate, this, &MainWindow::onStatusBarUpdate);
 }
 

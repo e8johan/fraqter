@@ -102,9 +102,12 @@ void FractalBuddabrot::redrawBuffer()
                     const int x = int((crd.real - topLeftCoord().real)/(bottomRightCoord().real - topLeftCoord().real)*double(m_buffer.width()));
                     const int y = int((crd.imag - topLeftCoord().imag)/(bottomRightCoord().imag - topLeftCoord().imag)*double(m_buffer.height()));
 
-                    counterBuffer[x][y] ++;
-                    if (counterBuffer[x][y] > maxHits)
-                        maxHits = counterBuffer[x][y];
+                    if (x>=0 && y>=0 && x<m_buffer.width() && y<m_buffer.height())
+                    {
+                        counterBuffer[x][y] ++;
+                        if (counterBuffer[x][y] > maxHits)
+                            maxHits = counterBuffer[x][y];
+                    }
                 }
 
                 break;
