@@ -23,6 +23,8 @@
 #include "fractaldejongattractor.h"
 #include "fractalcliffordattractor.h"
 #include "fractalifs.h"
+#include "fractallsystemtriangle.h"
+#include "fractallsystemweed.h"
 
 FractalFactory *FractalFactory::instance()
 {
@@ -66,6 +68,10 @@ AbstractFractalView *FractalFactory::createView(const QString fractalId)
         return new FractalCliffordAttractor();
     else if (fractalId == QStringLiteral("IFS Fern"))
         return new FractalIFS();
+    else if (fractalId == QStringLiteral("L-System Triangle"))
+        return new FractalLSystemTriangle();
+    else if (fractalId == QStringLiteral("L-System Weed"))
+        return new FractalLSystemWeed();
     else
         return nullptr;
 }
@@ -77,5 +83,7 @@ FractalFactory::FractalFactory()
                  << QStringLiteral("Buddabrot")
                  << QStringLiteral("de Jong Attractor")
                  << QStringLiteral("Clifford Attractor")
-                 << QStringLiteral("IFS Fern");
+                 << QStringLiteral("IFS Fern")
+                 << QStringLiteral("L-System Triangle")
+                 << QStringLiteral("L-System Weed");
 }

@@ -39,7 +39,10 @@ SOURCES += \
     abstractattractorview.cpp \
     fractaldejongattractor.cpp \
     fractalcliffordattractor.cpp \
-    fractalifs.cpp
+    fractalifs.cpp \
+    abstractlsystemview.cpp \
+    fractallsystemtriangle.cpp \
+    fractallsystemweed.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -55,7 +58,10 @@ HEADERS += \
     abstractattractorview.h \
     fractaldejongattractor.h \
     fractalcliffordattractor.h \
-    fractalifs.h
+    fractalifs.h \
+    abstractlsystemview.h \
+    fractallsystemtriangle.h \
+    fractallsystemweed.h
 
 FORMS += \
         mainwindow.ui \
