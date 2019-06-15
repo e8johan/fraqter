@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    fractallsystemdragoncurve.cpp \
         main.cpp \
         mainwindow.cpp \
     abstractfractalview.cpp \
@@ -45,6 +46,7 @@ SOURCES += \
     fractallsystemweed.cpp
 
 HEADERS += \
+    fractallsystemdragoncurve.h \
         mainwindow.h \
     abstractfractalview.h \
     abstractimaginaryrangeview.h \
