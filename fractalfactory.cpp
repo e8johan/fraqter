@@ -55,7 +55,7 @@ QVariant FractalFactory::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-AbstractFractalView *FractalFactory::createView(const QString fractalId)
+AbstractFractal *FractalFactory::createView(const QString fractalId)
 {
     if (fractalId == QStringLiteral("Mandelbrot"))
         return new FractalMandelbrot();

@@ -18,12 +18,12 @@
 #ifndef FRACTALCLIFFORDATTRACTOR_H
 #define FRACTALCLIFFORDATTRACTOR_H
 
-#include "abstractattractorview.h"
+#include "abstractattractorfractal.h"
 
-class FractalCliffordAttractor : public AbstractAttractorView
+class FractalCliffordAttractor : public AbstractAttractorFractal
 {
 public:
-    explicit FractalCliffordAttractor(QWidget *parent = nullptr);
+    explicit FractalCliffordAttractor(QObject *parent = nullptr);
 
 protected:
     virtual void iterate(FReal x, FReal y, FReal *nx, FReal *ny) const override;

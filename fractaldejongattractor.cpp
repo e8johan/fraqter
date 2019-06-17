@@ -17,8 +17,8 @@
  */
 #include "fractaldejongattractor.h"
 
-FractalDeJongAttractor::FractalDeJongAttractor(QWidget *parent)
-    : AbstractAttractorView(parent)
+FractalDeJongAttractor::FractalDeJongAttractor(QObject *parent)
+    : AbstractAttractorFractal(parent)
     , m_factors { 1.641, 1.902, 0.316, 1.525 }
 {
 

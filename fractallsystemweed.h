@@ -1,12 +1,12 @@
 #ifndef FRACTALLSYSTEMWEED_H
 #define FRACTALLSYSTEMWEED_H
 
-#include "abstractlsystemview.h"
+#include "abstractlsystemfractal.h"
 
-class FractalLSystemWeed : public AbstractLSystemView
+class FractalLSystemWeed : public AbstractLSystemFractal
 {
 public:
-    explicit FractalLSystemWeed(QWidget *parent = nullptr);
+    explicit FractalLSystemWeed(QObject *parent = nullptr);
 };
 
 #endif // FRACTALLSYSTEMWEED_H

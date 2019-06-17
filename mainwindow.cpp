@@ -32,7 +32,9 @@
 #include "newdialog.h"
 
 #include "fractalfactory.h"
-#include "abstractfractalview.h"
+#include "fractalview.h"
+
+#include "fractalifs.h"
 
 MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
     QMainWindow(parent),
@@ -40,18 +42,17 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_fractalView = FractalFactory::instance()->createView(fractalId);
-    if (m_fractalView == nullptr)
-        qFatal("No fractal view instantiated!");
+    m_fractalView = new FractalView(FractalFactory::instance()->createView(fractalId), this);
     setCentralWidget(m_fractalView);
 
-    ui->statusBar->addWidget(m_statusLabel = new QLabel(), 1);
+    if (m_fractalView->fractal() == nullptr)
+        qFatal("No fractal view instantiated!");
 
     QFormLayout *layout = new QFormLayout(ui->propertiesDockContents);
     ui->propertiesDockContents->setLayout(layout);
 
-    const QMetaObject *mo = m_fractalView->metaObject();
-    int firstIndex = AbstractFractalView::staticMetaObject.propertyOffset();
+    const QMetaObject *mo = m_fractalView->fractal()->metaObject();
+    int firstIndex = AbstractFractal::staticMetaObject.propertyOffset();
     for (int i=firstIndex; i<mo->propertyCount(); ++i)
     {
         if (mo->property(i).isScriptable())
@@ -70,10 +71,10 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
             {
                 QSpinBox *sb = new QSpinBox(ui->propertiesDockContents);
                 sb->setRange(1, 1000000000);
-                sb->setValue(m_fractalView->property(mo->property(i).name()).toInt());
+                sb->setValue(m_fractalView->fractal()->property(mo->property(i).name()).toInt());
                 connect(sb, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
                         [this, i](int newValue) {
-                            this->m_fractalView->setProperty(this->m_fractalView->metaObject()->property(i).name(), newValue);
+                            this->m_fractalView->fractal()->setProperty(this->m_fractalView->fractal()->metaObject()->property(i).name(), newValue);
                         } );
 
                 editor = sb;                
@@ -84,10 +85,10 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
                 QDoubleSpinBox *sb = new QDoubleSpinBox(ui->propertiesDockContents);
                 sb->setRange(0.1, 100.0);
                 sb->setSingleStep(0.1);
-                sb->setValue(m_fractalView->property(mo->property(i).name()).toDouble());
+                sb->setValue(m_fractalView->fractal()->property(mo->property(i).name()).toDouble());
                 connect(sb, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                         [this, i](double newValue) {
-                            this->m_fractalView->setProperty(this->m_fractalView->metaObject()->property(i).name(), newValue);
+                            this->m_fractalView->fractal()->setProperty(this->m_fractalView->fractal()->metaObject()->property(i).name(), newValue);
                         } );
 
                 editor = sb;
@@ -96,7 +97,7 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
             // For non-editable, let's just do a static line edit
             if (editor == nullptr)
             {
-                editor = new QLineEdit(m_fractalView->property(mo->property(i).name()).toString(), ui->propertiesDockContents);
+                editor = new QLineEdit(m_fractalView->fractal()->property(mo->property(i).name()).toString(), ui->propertiesDockContents);
                 editor->setEnabled(false);
             }
             layout->addRow(l, editor);
@@ -106,23 +107,22 @@ MainWindow::MainWindow(const QString &fractalId, QWidget *parent) :
     QCheckBox *autoRedraw = new QCheckBox(tr("Auto redraw"), ui->propertiesDockContents);
     autoRedraw->setChecked(m_fractalView->autoRedraw());
     QPushButton *forceRedraw = new QPushButton(tr("Redraw"), ui->propertiesDockContents);
-    connect(autoRedraw, &QCheckBox::stateChanged, m_fractalView, &AbstractFractalView::setAutoRedraw);
-    connect(forceRedraw, &QPushButton::clicked, m_fractalView, &AbstractFractalView::forceRedraw);
+    connect(autoRedraw, &QCheckBox::stateChanged, m_fractalView, &FractalView::setAutoRedraw);
+    connect(forceRedraw, &QPushButton::clicked, m_fractalView, &FractalView::forceRedraw);
     layout->addRow(autoRedraw, forceRedraw);
 
     connect(ui->actionFileNew, &QAction::triggered, this, &MainWindow::onNew);
     connect(ui->actionFileExit, &QAction::triggered, qApp, &QCoreApplication::quit);
     if (m_fractalView->canZoom())
     {
-        connect(ui->actionZoomIn, &QAction::triggered, m_fractalView, &AbstractFractalView::zoomIn);
-        connect(ui->actionZoomOut, &QAction::triggered, m_fractalView, &AbstractFractalView::zoomOut);
+        connect(ui->actionZoomIn, &QAction::triggered, m_fractalView, &FractalView::zoomIn);
+        connect(ui->actionZoomOut, &QAction::triggered, m_fractalView, &FractalView::zoomOut);
     }
     else
     {
         ui->actionZoomIn->setEnabled(false);
         ui->actionZoomOut->setEnabled(false);
     }
-    connect(m_fractalView, &AbstractFractalView::statusBarUpdate, this, &MainWindow::onStatusBarUpdate);
 }
 
 MainWindow::~MainWindow()

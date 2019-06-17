@@ -1,12 +1,12 @@
 #ifndef FRACTALLSYSTEMTRIANGLE_H
 #define FRACTALLSYSTEMTRIANGLE_H
 
-#include "abstractlsystemview.h"
+#include "abstractlsystemfractal.h"
 
-class FractalLSystemTriangle : public AbstractLSystemView
+class FractalLSystemTriangle : public AbstractLSystemFractal
 {
 public:
-    explicit FractalLSystemTriangle(QWidget *parent = nullptr);
+    explicit FractalLSystemTriangle(QObject *parent = nullptr);
 };
 
 #endif // FRACTALLSYSTEMTRIANGLE

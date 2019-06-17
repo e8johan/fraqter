@@ -15,44 +15,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "abstractimaginaryrangeescapeview.h"
+#include "abstractimaginaryrangeescapefractal.h"
 
-AbstractImaginaryRangeEscapeView::AbstractImaginaryRangeEscapeView(QWidget *parent)
-    : AbstractImaginaryRangeView(parent)
+AbstractImaginaryRangeEscapeFractal::AbstractImaginaryRangeEscapeFractal(QObject *parent)
+    : AbstractImaginaryRangeFractal(parent)
     , m_maxIterations(1000)
 {
 
 }
 
-int AbstractImaginaryRangeEscapeView::maxIterations() const
+int AbstractImaginaryRangeEscapeFractal::maxIterations() const
 {
     return m_maxIterations;
 }
 
-void AbstractImaginaryRangeEscapeView::setMaxIterations(int maxIterations)
+void AbstractImaginaryRangeEscapeFractal::setMaxIterations(int maxIterations)
 {
     if (m_maxIterations == maxIterations)
         return;
 
     m_maxIterations = maxIterations;
-    if (autoRedraw())
-        redrawBuffer();
+
+    emit bufferNeedsRepaint();
     emit maxIterationsChanged(m_maxIterations);
 }
 
-void AbstractImaginaryRangeEscapeView::forceRedraw()
-{
-    redrawBuffer();
-}
-
-const QImage &AbstractImaginaryRangeEscapeView::buffer() const
+const QImage &AbstractImaginaryRangeEscapeFractal::buffer() const
 {
     return m_buffer;
 }
 
-void AbstractImaginaryRangeEscapeView::redrawBuffer()
+void AbstractImaginaryRangeEscapeFractal::generateNewBuffer(const QSize & size)
 {
-    m_buffer = QImage(size(), QImage::Format_ARGB32);
+    m_buffer = QImage(size, QImage::Format_ARGB32);
 
     for (int x=0; x<m_buffer.width(); ++x)
         for (int y=0; y<m_buffer.height(); ++y)
@@ -66,5 +61,5 @@ void AbstractImaginaryRangeEscapeView::redrawBuffer()
             m_buffer.setPixelColor(x, y, color);
         }
 
-    update();
+    emit bufferUpdated();
 }

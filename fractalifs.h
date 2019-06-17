@@ -18,24 +18,21 @@
 #ifndef FRACTALIFS_H
 #define FRACTALIFS_H
 
-#include "abstractfractalview.h"
+#include "abstractfractal.h"
 
 #include <QImage>
 
-class FractalIFS : public AbstractFractalView
+class FractalIFS : public AbstractFractal
 {
     Q_OBJECT
 
 public:
-    explicit FractalIFS(QWidget *parent = nullptr);
+    explicit FractalIFS(QObject *parent = nullptr);
 
-protected:
-    void paintEvent(QPaintEvent*) override;
-    void resizeEvent(QResizeEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
+    virtual bool canZoom() const override;
 
-    virtual void forceRedraw() override;
-    void redrawBuffer();
+    virtual const QImage &buffer() const override;
+    virtual void generateNewBuffer(const QSize &) override;
 
 private:
     QImage m_buffer;

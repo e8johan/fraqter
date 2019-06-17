@@ -25,43 +25,45 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    abstractattractorfractal.cpp \
+    abstractfractal.cpp \
+    abstractimaginaryrangeescapefractal.cpp \
+    abstractimaginaryrangefractal.cpp \
+    abstractlsystemfractal.cpp \
     fractallsystemdragoncurve.cpp \
+    fractalview.cpp \
         main.cpp \
         mainwindow.cpp \
-    abstractfractalview.cpp \
-    abstractimaginaryrangeview.cpp \
     fractalmandelbrot.cpp \
     fractaljulia.cpp \
     newdialog.cpp \
     fractalfactory.cpp \
     fmath.cpp \
     fractalbuddabrot.cpp \
-    abstractimaginaryrangeescapeview.cpp \
-    abstractattractorview.cpp \
     fractaldejongattractor.cpp \
     fractalcliffordattractor.cpp \
     fractalifs.cpp \
-    abstractlsystemview.cpp \
     fractallsystemtriangle.cpp \
     fractallsystemweed.cpp
 
 HEADERS += \
+    abstractattractorfractal.h \
+    abstractfractal.h \
+    abstractimaginaryrangeescapefractal.h \
+    abstractimaginaryrangefractal.h \
+    abstractlsystemfractal.h \
     fractallsystemdragoncurve.h \
+    fractalview.h \
         mainwindow.h \
-    abstractfractalview.h \
-    abstractimaginaryrangeview.h \
     fractalmandelbrot.h \
     fractaljulia.h \
     newdialog.h \
     fractalfactory.h \
     fmath.h \
     fractalbuddabrot.h \
-    abstractimaginaryrangeescapeview.h \
-    abstractattractorview.h \
     fractaldejongattractor.h \
     fractalcliffordattractor.h \
     fractalifs.h \
-    abstractlsystemview.h \
     fractallsystemtriangle.h \
     fractallsystemweed.h
 

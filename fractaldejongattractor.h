@@ -18,14 +18,14 @@
 #ifndef FRACTALDEJONGATTRACTOR_H
 #define FRACTALDEJONGATTRACTOR_H
 
-#include "abstractattractorview.h"
+#include "abstractattractorfractal.h"
 
-class FractalDeJongAttractor : public AbstractAttractorView
+class FractalDeJongAttractor : public AbstractAttractorFractal
 {
     Q_OBJECT
 
 public:
-    explicit FractalDeJongAttractor(QWidget *parent = nullptr);
+    explicit FractalDeJongAttractor(QObject *parent = nullptr);
 
 protected:
     virtual void iterate(FReal x, FReal y, FReal *nx, FReal *ny) const override;

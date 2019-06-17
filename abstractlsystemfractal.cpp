@@ -1,4 +1,4 @@
-#include "abstractlsystemview.h"
+#include "abstractlsystemfractal.h"
 
 #include <QPainter>
 #include <QPaintEvent>
@@ -6,68 +6,53 @@
 
 #include <math.h>
 
-AbstractLSystemView::AbstractLSystemView(QWidget *parent)
-    : AbstractFractalView(parent)
+AbstractLSystemFractal::AbstractLSystemFractal(QObject *parent)
+    : AbstractFractal(parent)
     , m_angleStep(0)
     , m_iterations(3)
     , m_linesDirty(true)
 {
 }
 
-int AbstractLSystemView::iterations() const
+bool AbstractLSystemFractal::canZoom() const
+{
+    return false;
+}
+
+const QImage &AbstractLSystemFractal::buffer() const
+{
+    return m_buffer;
+}
+
+int AbstractLSystemFractal::iterations() const
 {
     return m_iterations;
 }
 
-void AbstractLSystemView::setIterations(int iterations)
+void AbstractLSystemFractal::setIterations(int iterations)
 {
     if (m_iterations == iterations)
         return;
 
     m_iterations = iterations;
-    if (autoRedraw())
-        recalculateLines();
-    else
-        m_linesDirty = true;
+
+    m_linesDirty = true;
+    emit bufferNeedsRepaint();
+
     emit iterationsChanged(m_iterations);
 }
 
-void AbstractLSystemView::paintEvent(QPaintEvent *e)
-{
-    if (!m_buffer.isNull())
-    {
-        QPainter p(this);
-        p.drawImage(e->rect(), m_buffer, e->rect());
-    }
-    else {
-        QPainter p(this);
-        p.setBrush(Qt::darkGray);
-        p.drawRect(e->rect());
-    }
-}
-
-void AbstractLSystemView::resizeEvent(QResizeEvent *)
-{
-    if (autoRedraw())
-        forceRedraw();
-}
-
-void AbstractLSystemView::mouseMoveEvent(QMouseEvent *)
-{
-
-}
-
-void AbstractLSystemView::forceRedraw()
+void AbstractLSystemFractal::generateNewBuffer(const QSize &size)
 {
     if (m_linesDirty)
         recalculateLines();
-    else
-        redrawBuffer();
+
+    redrawBuffer(size);
 }
 
-void AbstractLSystemView::redrawBuffer()
+void AbstractLSystemFractal::redrawBuffer(const QSize &size)
 {
-    m_buffer = QImage(size(), QImage::Format_ARGB32);
+    m_buffer = QImage(size, QImage::Format_ARGB32);
     m_buffer.fill(Qt::white);
 
     if (m_lines.length() > 0)
@@ -127,10 +112,10 @@ void AbstractLSystemView::redrawBuffer()
     else
         qDebug("LSystem: no lines generated");
 
-    update();
+    emit bufferUpdated();
 }
 
-void AbstractLSystemView::recalculateLines()
+void AbstractLSystemFractal::recalculateLines()
 {
     QString string = axiom();
 
@@ -167,7 +152,7 @@ void AbstractLSystemView::recalculateLines()
         )	         Increment turning angle by turning angle increment [NOT IMPLEMENTED]
    */
 
-    qreal angleStep = AbstractLSystemView::angleStep();
+    qreal angleStep = AbstractLSystemFractal::angleStep();
 
     // Draw state
     qreal lineLength = 10;
@@ -225,16 +210,14 @@ void AbstractLSystemView::recalculateLines()
     }
 
     m_linesDirty = false;
-
-    redrawBuffer();
 }
 
-QString AbstractLSystemView::axiom() const
+QString AbstractLSystemFractal::axiom() const
 {
     return m_axiom;
 }
 
-QString AbstractLSystemView::fromRule(const QChar &c) const
+QString AbstractLSystemFractal::fromRule(const QChar &c) const
 {
     QMap<QString,QString>::ConstIterator ii = m_rules.find(c);
     if (ii != m_rules.end())
@@ -243,22 +226,22 @@ QString AbstractLSystemView::fromRule(const QChar &c) const
         return QString(c);
 }
 
-qreal AbstractLSystemView::angleStep() const
+qreal AbstractLSystemFractal::angleStep() const
 {
     return m_angleStep;
 }
 
-void AbstractLSystemView::setAxiom(const QString &a)
+void AbstractLSystemFractal::setAxiom(const QString &a)
 {
     m_axiom = a;
 }
 
-void AbstractLSystemView::setRules(const QMap<QString, QString> &r)
+void AbstractLSystemFractal::setRules(const QMap<QString, QString> &r)
 {
     m_rules = r;
 }
 
-void AbstractLSystemView::setAngleStep(qreal a)
+void AbstractLSystemFractal::setAngleStep(qreal a)
 {
     m_angleStep = a;
 }

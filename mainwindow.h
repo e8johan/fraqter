@@ -20,7 +20,7 @@
 
 #include <QMainWindow>
 
-class AbstractFractalView;
+class FractalView;
 class QLabel;
 
 namespace Ui {
@@ -43,7 +43,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    AbstractFractalView *m_fractalView;
+    FractalView *m_fractalView;
     QLabel *m_statusLabel;
 };
 

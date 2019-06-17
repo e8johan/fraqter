@@ -1,7 +1,7 @@
 #include "fractallsystemdragoncurve.h"
 
-FractalLSystemDragonCurve::FractalLSystemDragonCurve(QWidget *parent)
-    : AbstractLSystemView(parent)
+FractalLSystemDragonCurve::FractalLSystemDragonCurve(QObject *parent)
+    : AbstractLSystemFractal(parent)
 {
     QMap<QString,QString> rules;
     rules["X"] = "X+YF+";

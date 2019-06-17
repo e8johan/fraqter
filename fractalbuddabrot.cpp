@@ -22,8 +22,8 @@
 #include <QRandomGenerator>
 #include <QColor>
 
-FractalBuddabrot::FractalBuddabrot(QWidget *parent)
-    : AbstractImaginaryRangeView(parent)
+FractalBuddabrot::FractalBuddabrot(QObject *parent)
+    : AbstractImaginaryRangeFractal(parent)
     , m_iterationsFactor(2.0)
     , m_maxIterations(50)
 {
@@ -40,19 +40,14 @@ int FractalBuddabrot::maxIterations() const
     return m_maxIterations;
 }
 
-void FractalBuddabrot::forceRedraw()
-{
-    redrawBuffer();
-}
-
 void FractalBuddabrot::setIterationsFactor(qreal iterationsFactor)
 {
     if (qFuzzyCompare(m_iterationsFactor, iterationsFactor))
         return;
 
     m_iterationsFactor = iterationsFactor;
-    if (autoRedraw())
-        redrawBuffer();
+/* TODO    if (autoRedraw())
+        redrawBuffer(); */
     emit iterationsFactorChanged(m_iterationsFactor);
 }
 
@@ -62,14 +57,14 @@ void FractalBuddabrot::setMaxIterations(int maxIterations)
         return;
 
     m_maxIterations = maxIterations;
-    if (autoRedraw())
-        redrawBuffer();
+    /* TODO    if (autoRedraw())
+            redrawBuffer(); */
     emit maxIterationsChanged(m_maxIterations);
 }
 
-void FractalBuddabrot::redrawBuffer()
+void FractalBuddabrot::generateNewBuffer(const QSize &size)
 {
-    m_buffer = QImage(size(), QImage::Format_ARGB32);
+    m_buffer = QImage(size, QImage::Format_ARGB32);
     QVector<QVector<int> > counterBuffer(m_buffer.width(), QVector<int>(m_buffer.height()));
     long long iterations = static_cast<long long>(double(m_buffer.width() * m_buffer.height()) * iterationsFactor());
     int maxHits = 1;
@@ -125,7 +120,7 @@ void FractalBuddabrot::redrawBuffer()
             m_buffer.setPixelColor(x, y, color);
         }
 
-    update();
+    emit bufferUpdated();
 }
 
 const QImage &FractalBuddabrot::buffer() const

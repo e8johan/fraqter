@@ -15,13 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef ABSTRACTIMAGINARYRANGEVIEW_H
-#define ABSTRACTIMAGINARYRANGEVIEW_H
+#ifndef ABSTRACTIMAGINARYRANGEFRACTAL_H
+#define ABSTRACTIMAGINARYRANGEFRACTAL_H
 
-#include "abstractfractalview.h"
+#include "abstractfractal.h"
 #include "fmath.h"
 
-class AbstractImaginaryRangeView : public AbstractFractalView
+class AbstractImaginaryRangeFractal : public AbstractFractal
 {
     Q_OBJECT
 
@@ -29,14 +29,15 @@ class AbstractImaginaryRangeView : public AbstractFractalView
     Q_PROPERTY(FComplex bottomRightCoord READ bottomRightCoord WRITE setBottomRightCoord NOTIFY bottomRightCoordChanged)
 
 public:
-    explicit AbstractImaginaryRangeView(QWidget *parent = nullptr);
+    explicit AbstractImaginaryRangeFractal(QObject *parent = nullptr);
 
     FComplex topLeftCoord() const;
     FComplex bottomRightCoord() const;
 
     virtual bool canZoom() const override;
-    virtual void zoomIn() override;
-    virtual void zoomOut() override;
+    virtual void zoom(QSize, QRect) override;
+    virtual void zoomIn(QSize, QPoint) override;
+    virtual void zoomOut(QSize, QPoint) override;
 
 public slots:
     void setTopLeftCoord(FComplex topLeftCoord);
@@ -46,25 +47,11 @@ signals:
     void topLeftCoordChanged(FComplex topLeftCoord);
     void bottomRightCoordChanged(FComplex bottomRightCoord);
 
-protected:
-    void paintEvent(QPaintEvent*) override;
-    void resizeEvent(QResizeEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
-    void mousePressEvent(QMouseEvent*) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
-
-    virtual void redrawBuffer() = 0;
-    virtual const QImage &buffer() const = 0;
-
 private:
-    FComplex posToComplex(int x, int y) const;
-    QRect rectFromPoints(const QPoint &a, const QPoint &b) const;
+    FComplex posToComplex(const QSize &s, int x, int y) const;
 
     FComplex m_topLeftCoord;
     FComplex m_bottomRightCoord;
-
-    bool m_isDragging;
-    QPoint m_dragStart, m_dragLast;
 };
 
-#endif // ABSTRACTIMAGINARYRANGEVIEW_H
+#endif // ABSTRACTIMAGINARYRANGEFRACTAL_H

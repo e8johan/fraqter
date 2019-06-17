@@ -18,12 +18,12 @@
 #ifndef FRACTALMANDELBROT_H
 #define FRACTALMANDELBROT_H
 
-#include "abstractimaginaryrangeescapeview.h"
+#include "abstractimaginaryrangeescapefractal.h"
 
-class FractalMandelbrot : public AbstractImaginaryRangeEscapeView
+class FractalMandelbrot : public AbstractImaginaryRangeEscapeFractal
 {
 public:
-    explicit FractalMandelbrot(QWidget *parent = nullptr);
+    explicit FractalMandelbrot(QObject *parent = nullptr);
 
 protected:
     virtual double iterate(const FComplex &c0) const override;

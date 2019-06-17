@@ -18,16 +18,16 @@
 #ifndef FRACTALJULIA_H
 #define FRACTALJULIA_H
 
-#include "abstractimaginaryrangeescapeview.h"
+#include "abstractimaginaryrangeescapefractal.h"
 
-class FractalJulia : public AbstractImaginaryRangeEscapeView
+class FractalJulia : public AbstractImaginaryRangeEscapeFractal
 {
     Q_OBJECT
 
     Q_PROPERTY(FComplex c READ cValue WRITE setCValue NOTIFY cValueChanged)
 
 public:
-    explicit FractalJulia(QWidget *parent = nullptr);
+    explicit FractalJulia(QObject *parent = nullptr);
 
     FComplex cValue() const;
 

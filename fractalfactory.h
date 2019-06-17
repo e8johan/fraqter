@@ -20,7 +20,7 @@
 
 #include <QAbstractListModel>
 
-class AbstractFractalView;
+class AbstractFractal;
 
 class FractalFactory;
 class FractalFactory : public QAbstractListModel
@@ -32,7 +32,7 @@ public:
     virtual int rowCount(const QModelIndex &) const override;
     virtual QVariant data(const QModelIndex &, int) const override;
 
-    AbstractFractalView *createView(const QString fractalId);
+    AbstractFractal *createView(const QString fractalId);
 
 private:
     FractalFactory();

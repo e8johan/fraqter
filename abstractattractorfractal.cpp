@@ -15,67 +15,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "abstractattractorview.h"
+#include "abstractattractorfractal.h"
 
 #include <QPaintEvent>
 #include <QPainter>
 #include <QMouseEvent>
 
-AbstractAttractorView::AbstractAttractorView(QWidget *parent)
-    : AbstractFractalView(parent)
+AbstractAttractorFractal::AbstractAttractorFractal(QObject *parent)
+    : AbstractFractal(parent)
     , m_iterations(1000000)
 {
 }
 
-long AbstractAttractorView::iterations() const
+bool AbstractAttractorFractal::canZoom() const
+{
+    return false;
+}
+
+const QImage &AbstractAttractorFractal::buffer() const
+{
+    return m_buffer;
+}
+
+long AbstractAttractorFractal::iterations() const
 {
     return m_iterations;
 }
 
-void AbstractAttractorView::setIterations(long iterations)
+void AbstractAttractorFractal::setIterations(long iterations)
 {
     if (m_iterations == iterations)
         return;
 
     m_iterations = iterations;
-    if (autoRedraw())
-        redrawBuffer();
+
+    emit bufferUpdated();
     emit iterationsChanged(m_iterations);
 }
 
-void AbstractAttractorView::paintEvent(QPaintEvent *e)
+void AbstractAttractorFractal::generateNewBuffer(const QSize &size)
 {
-    if (!m_buffer.isNull())
-    {
-        QPainter p(this);
-        p.drawImage(e->rect(), m_buffer, e->rect());
-    }
-    else {
-        QPainter p(this);
-        p.setBrush(Qt::darkGray);
-        p.drawRect(e->rect());
-    }
-}
-
-void AbstractAttractorView::resizeEvent(QResizeEvent *)
-{
-    if (autoRedraw())
-        redrawBuffer();
-}
-
-void AbstractAttractorView::mouseMoveEvent(QMouseEvent *)
-{
-
-}
-
-void AbstractAttractorView::forceRedraw()
-{
-    redrawBuffer();
-}
-
-void AbstractAttractorView::redrawBuffer()
-{
-    m_buffer = QImage(size(), QImage::Format_ARGB32);
+    m_buffer = QImage(size, QImage::Format_ARGB32);
 
     QVector<QVector<int> > counterBuffer(m_buffer.width(), QVector<int>(m_buffer.height()));
     long iterations = m_iterations;
@@ -111,5 +91,5 @@ void AbstractAttractorView::redrawBuffer()
         }
 
 
-    update();
+    emit bufferUpdated();
 }

@@ -1,7 +1,7 @@
 #include "fractallsystemweed.h"
 
-FractalLSystemWeed::FractalLSystemWeed(QWidget *parent)
-    : AbstractLSystemView(parent)
+FractalLSystemWeed::FractalLSystemWeed(QObject *parent)
+    : AbstractLSystemFractal(parent)
 {
     QMap<QString, QString> rules;
     rules["F"] = "FF";

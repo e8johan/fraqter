@@ -17,8 +17,8 @@
  */
 #include "fractalcliffordattractor.h"
 
-FractalCliffordAttractor::FractalCliffordAttractor(QWidget *parent)
-    : AbstractAttractorView(parent)
+FractalCliffordAttractor::FractalCliffordAttractor(QObject *parent)
+    : AbstractAttractorFractal(parent)
     , m_factors { 1.7, 1.7, 0.6, 1.2 }
 {
 

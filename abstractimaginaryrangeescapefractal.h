@@ -15,33 +15,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef ABSTRACTIMAGINARYRANGEESCAPEVIEW_H
-#define ABSTRACTIMAGINARYRANGEESCAPEVIEW_H
+#ifndef ABSTRACTIMAGINARYRANGEESCAPEFRACTAL_H
+#define ABSTRACTIMAGINARYRANGEESCAPEFRACTAL_H
 
-#include "abstractimaginaryrangeview.h"
+#include "abstractimaginaryrangefractal.h"
 
-class AbstractImaginaryRangeEscapeView : public AbstractImaginaryRangeView
+class AbstractImaginaryRangeEscapeFractal : public AbstractImaginaryRangeFractal
 {
     Q_OBJECT
 
     Q_PROPERTY(int maxIterations READ maxIterations WRITE setMaxIterations NOTIFY maxIterationsChanged)
 
 public:
-    explicit AbstractImaginaryRangeEscapeView(QWidget *parent = nullptr);
+    explicit AbstractImaginaryRangeEscapeFractal(QObject *parent = nullptr);
+
+    virtual void generateNewBuffer(const QSize &) override;
+    virtual const QImage &buffer() const override;
 
     int maxIterations() const;
 
 public slots:
     void setMaxIterations(int maxIterations);
-    virtual void forceRedraw() override;
 
 signals:
     void maxIterationsChanged(int maxIterations);
 
 protected:
-    virtual void redrawBuffer() override;
-    virtual const QImage &buffer() const override;
-
     virtual double iterate(const FComplex &) const = 0;
 
 private:
@@ -50,4 +49,4 @@ private:
     int m_maxIterations;
 };
 
-#endif // ABSTRACTIMAGINARYRANGEESCAPEVIEW_H
+#endif // ABSTRACTIMAGINARYRANGEESCAPEFRACTAL_H

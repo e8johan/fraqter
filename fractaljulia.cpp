@@ -17,8 +17,8 @@
  */
 #include "fractaljulia.h"
 
-FractalJulia::FractalJulia(QWidget *parent)
-    : AbstractImaginaryRangeEscapeView(parent)
+FractalJulia::FractalJulia(QObject *parent)
+    : AbstractImaginaryRangeEscapeFractal(parent)
     , m_cValue(-0.8, 0.156)
 {
 
@@ -35,7 +35,8 @@ void FractalJulia::setCValue(FComplex c)
         return;
 
     m_cValue = c;
-    redrawBuffer();
+
+    emit bufferNeedsRepaint();
     emit cValueChanged(m_cValue);
 }
 

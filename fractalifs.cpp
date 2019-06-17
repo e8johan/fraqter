@@ -23,45 +23,25 @@
 #include <QPaintEvent>
 #include <QRandomGenerator>
 
-FractalIFS::FractalIFS(QWidget *parent)
-    : AbstractFractalView(parent)
+FractalIFS::FractalIFS(QObject *parent)
+    : AbstractFractal(parent)
 {
 
 }
 
-void FractalIFS::paintEvent(QPaintEvent *e)
+bool FractalIFS::canZoom() const
 {
-    if (!m_buffer.isNull())
-    {
-        QPainter p(this);
-        p.drawImage(e->rect(), m_buffer, e->rect());
-    }
-    else {
-        QPainter p(this);
-        p.setBrush(Qt::darkGray);
-        p.drawRect(e->rect());
-    }
+    return false;
 }
 
-void FractalIFS::resizeEvent(QResizeEvent *)
+const QImage &FractalIFS::buffer() const
 {
-    if (autoRedraw())
-        redrawBuffer();
+    return m_buffer;
 }
 
-void FractalIFS::mouseMoveEvent(QMouseEvent *)
+void FractalIFS::generateNewBuffer(const QSize &size)
 {
-
-}
-
-void FractalIFS::forceRedraw()
-{
-    redrawBuffer();
-}
-
-void FractalIFS::redrawBuffer()
-{
-    m_buffer = QImage(size(), QImage::Format_ARGB32);
+    m_buffer = QImage(size, QImage::Format_ARGB32);
     m_buffer.fill(Qt::white);
 
     /*
@@ -140,5 +120,5 @@ void FractalIFS::redrawBuffer()
         y = ny;
     }
 
-    update();
+    emit bufferUpdated();
 }

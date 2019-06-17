@@ -1,12 +1,12 @@
 #ifndef FRACTALLSYSTEMDRAGONCURVE_H
 #define FRACTALLSYSTEMDRAGONCURVE_H
 
-#include "abstractlsystemview.h"
+#include "abstractlsystemfractal.h"
 
-class FractalLSystemDragonCurve : public AbstractLSystemView
+class FractalLSystemDragonCurve : public AbstractLSystemFractal
 {
 public:
-    explicit FractalLSystemDragonCurve(QWidget *parent = nullptr);
+    explicit FractalLSystemDragonCurve(QObject *parent = nullptr);
 };
 
 #endif // FRACTALLSYSTEMDRAGONCURVE_H

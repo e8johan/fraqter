@@ -15,37 +15,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef ABSTRACTFRACTALVIEW_H
-#define ABSTRACTFRACTALVIEW_H
+#ifndef ABSTRACTATTRACTORFRACTAL_H
+#define ABSTRACTATTRACTORFRACTAL_H
 
-#include <QWidget>
+#include "abstractfractal.h"
+#include "fmath.h"
+
 #include <QImage>
 
-class AbstractFractalView : public QWidget
+class AbstractAttractorFractal : public AbstractFractal
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool autoRedraw READ autoRedraw WRITE setAutoRedraw NOTIFY autoRedrawChanged SCRIPTABLE false)
+    Q_PROPERTY(long iterations READ iterations WRITE setIterations NOTIFY iterationsChanged)
 
 public:
-    explicit AbstractFractalView(QWidget *parent = nullptr);
-    bool autoRedraw() const;
+    explicit AbstractAttractorFractal(QObject *parent = nullptr);
 
-    virtual bool canZoom() const;
+    virtual bool canZoom() const override;
+
+    virtual const QImage &buffer() const;
+    virtual void generateNewBuffer(const QSize &) override;
+
+    long iterations() const;
 
 public slots:
-    virtual void forceRedraw() = 0;
-    virtual void zoomIn();
-    virtual void zoomOut();
-    void setAutoRedraw(bool autoRedraw);
+    void setIterations(long iterations);
 
 signals:
-    void autoRedrawChanged(bool autoRedraw);
+    void iterationsChanged(long iterations);
 
-    void statusBarUpdate(const QString &);
+protected:
+    virtual void iterate(FReal x, FReal y, FReal *nx, FReal *ny) const = 0;
 
 private:
-    bool m_autoRedraw;
+    QImage m_buffer;
+    long m_iterations;
 };
 
-#endif // ABSTRACTFRACTALVIEW_H
+#endif // ABSTRACTATTRACTORFRACTAL_H

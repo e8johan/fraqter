@@ -1,7 +1,7 @@
 #include "fractallsystemtriangle.h"
 
-FractalLSystemTriangle::FractalLSystemTriangle(QWidget *parent)
-    : AbstractLSystemView(parent)
+FractalLSystemTriangle::FractalLSystemTriangle(QObject *parent)
+    : AbstractLSystemFractal(parent)
 {
     QMap<QString, QString> rules;
     rules["F"] = "F-F+F";
