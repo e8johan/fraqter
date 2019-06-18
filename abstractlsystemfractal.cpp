@@ -19,11 +19,6 @@ bool AbstractLSystemFractal::canZoom() const
     return false;
 }
 
-const QImage &AbstractLSystemFractal::buffer() const
-{
-    return m_buffer;
-}
-
 int AbstractLSystemFractal::iterations() const
 {
     return m_iterations;
@@ -52,8 +47,8 @@ void AbstractLSystemFractal::generateNewBuffer(const QSize &size)
 
 void AbstractLSystemFractal::redrawBuffer(const QSize &size)
 {
-    m_buffer = QImage(size, QImage::Format_ARGB32);
-    m_buffer.fill(Qt::white);
+    QImage buffer = QImage(size, QImage::Format_ARGB32);
+    buffer.fill(Qt::white);
 
     if (m_lines.length() > 0)
     {
@@ -91,28 +86,28 @@ void AbstractLSystemFractal::redrawBuffer(const QSize &size)
         qreal linesWidth = (maxX - minX);
         qreal linesHeight = (maxY - minY);
 
-        qreal factor = m_buffer.width()/linesWidth;
-        if (m_buffer.height()/linesHeight < factor)
-            factor = m_buffer.height()/linesHeight;
+        qreal factor = buffer.width()/linesWidth;
+        if (buffer.height()/linesHeight < factor)
+            factor = buffer.height()/linesHeight;
 
         factor *= 0.9; // Adding 10% margin
 
-        qreal xOffset = (m_buffer.width()-linesWidth*factor)/2.0;
-        qreal yOffset = (m_buffer.height()-linesHeight*factor)/2.0;
+        qreal xOffset = (buffer.width()-linesWidth*factor)/2.0;
+        qreal yOffset = (buffer.height()-linesHeight*factor)/2.0;
 
-        QPainter p(&m_buffer);
+        QPainter p(&buffer);
         p.setPen(Qt::black);
 
         for (QList<QLineF>::ConstIterator ii = m_lines.constBegin(); ii != m_lines.constEnd(); ++ii)
         {
-            p.drawLine(QLineF((ii->p1().x()-minX)*factor+xOffset, m_buffer.height()-(ii->p1().y()-minY)*factor-yOffset,
-                       (ii->p2().x()-minX)*factor+xOffset, m_buffer.height()-(ii->p2().y()-minY)*factor-yOffset));
+            p.drawLine(QLineF((ii->p1().x()-minX)*factor+xOffset, buffer.height()-(ii->p1().y()-minY)*factor-yOffset,
+                       (ii->p2().x()-minX)*factor+xOffset, buffer.height()-(ii->p2().y()-minY)*factor-yOffset));
         }
     }
     else
         qDebug("LSystem: no lines generated");
 
-    emit bufferUpdated();
+    setBuffer(buffer);
 }
 
 void AbstractLSystemFractal::recalculateLines()

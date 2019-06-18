@@ -34,7 +34,6 @@ public:
 
     virtual bool canZoom() const override;
 
-    virtual const QImage &buffer() const;
     virtual void generateNewBuffer(const QSize &) override;
 
     long iterations() const;
@@ -49,7 +48,6 @@ protected:
     virtual void iterate(FReal x, FReal y, FReal *nx, FReal *ny) const = 0;
 
 private:
-    QImage m_buffer;
     long m_iterations;
 };
 

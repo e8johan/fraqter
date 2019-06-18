@@ -32,11 +32,6 @@ bool AbstractAttractorFractal::canZoom() const
     return false;
 }
 
-const QImage &AbstractAttractorFractal::buffer() const
-{
-    return m_buffer;
-}
-
 long AbstractAttractorFractal::iterations() const
 {
     return m_iterations;
@@ -49,15 +44,15 @@ void AbstractAttractorFractal::setIterations(long iterations)
 
     m_iterations = iterations;
 
-    emit bufferUpdated();
+    emit bufferNeedsRepaint();
     emit iterationsChanged(m_iterations);
 }
 
 void AbstractAttractorFractal::generateNewBuffer(const QSize &size)
 {
-    m_buffer = QImage(size, QImage::Format_ARGB32);
+    QImage buffer = QImage(size, QImage::Format_ARGB32);
 
-    QVector<QVector<int> > counterBuffer(m_buffer.width(), QVector<int>(m_buffer.height()));
+    QVector<QVector<int> > counterBuffer(buffer.width(), QVector<int>(buffer.height()));
     long iterations = m_iterations;
     int maxHits = 1;
 
@@ -68,10 +63,10 @@ void AbstractAttractorFractal::generateNewBuffer(const QSize &size)
     {
         iterate(x, y, &nx, &ny);
 
-        int px = int(m_buffer.width()*(nx+2.0)/4.0);
-        int py = int(m_buffer.height()*(ny+2.0)/4.0);
+        int px = int(buffer.width()*(nx+2.0)/4.0);
+        int py = int(buffer.height()*(ny+2.0)/4.0);
 
-        if (px >= 0 && px < m_buffer.width() && py >= 0 && py < m_buffer.height() )
+        if (px >= 0 && px < buffer.width() && py >= 0 && py < buffer.height() )
         {
             counterBuffer[px][py]++;
             if (counterBuffer[px][py] > maxHits)
@@ -82,14 +77,14 @@ void AbstractAttractorFractal::generateNewBuffer(const QSize &size)
         y = ny;
     }
 
-    for (int px=0; px<m_buffer.width(); ++px)
-        for (int py=0; py<m_buffer.height(); ++py)
+    for (int px=0; px<buffer.width(); ++px)
+        for (int py=0; py<buffer.height(); ++py)
         {
             qreal f = log10((counterBuffer[px][py]==0?1.0:1.2)+8.8*qreal(counterBuffer[px][py])/qreal(maxHits));
             QColor color = QColor(int(255*f), int(255*f), int(64*(1.0-f)));
-            m_buffer.setPixelColor(px, py, color);
+            buffer.setPixelColor(px, py, color);
         }
 
 
-    emit bufferUpdated();
+    setBuffer(buffer);
 }

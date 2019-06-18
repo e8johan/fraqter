@@ -34,15 +34,10 @@ bool FractalIFS::canZoom() const
     return false;
 }
 
-const QImage &FractalIFS::buffer() const
-{
-    return m_buffer;
-}
-
 void FractalIFS::generateNewBuffer(const QSize &size)
 {
-    m_buffer = QImage(size, QImage::Format_ARGB32);
-    m_buffer.fill(Qt::white);
+    QImage buffer = QImage(size, QImage::Format_ARGB32);
+    buffer.fill(Qt::white);
 
     /*
               a     0.0       0.2      -0.15      0.85
@@ -110,7 +105,7 @@ void FractalIFS::generateNewBuffer(const QSize &size)
         if (initIterations == 0)
         {
             const QColor color = QColor(Qt::darkGreen);
-            m_buffer.setPixelColor(int(m_buffer.width()*(nx+3.0)/6.0), int(m_buffer.height()*(11.0-ny)/11.0), color);
+            buffer.setPixelColor(int(buffer.width()*(nx+3.0)/6.0), int(buffer.height()*(11.0-ny)/11.0), color);
         }
         else {
             initIterations --;
@@ -120,5 +115,5 @@ void FractalIFS::generateNewBuffer(const QSize &size)
         y = ny;
     }
 
-    emit bufferUpdated();
+    setBuffer(buffer);
 }

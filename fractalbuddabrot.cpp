@@ -64,9 +64,9 @@ void FractalBuddabrot::setMaxIterations(int maxIterations)
 
 void FractalBuddabrot::generateNewBuffer(const QSize &size)
 {
-    m_buffer = QImage(size, QImage::Format_ARGB32);
-    QVector<QVector<int> > counterBuffer(m_buffer.width(), QVector<int>(m_buffer.height()));
-    long long iterations = static_cast<long long>(double(m_buffer.width() * m_buffer.height()) * iterationsFactor());
+    QImage buffer = QImage(size, QImage::Format_ARGB32);
+    QVector<QVector<int> > counterBuffer(buffer.width(), QVector<int>(buffer.height()));
+    long long iterations = static_cast<long long>(double(buffer.width() * buffer.height()) * iterationsFactor());
     int maxHits = 1;
 
     QRandomGenerator rand;
@@ -94,10 +94,10 @@ void FractalBuddabrot::generateNewBuffer(const QSize &size)
                 {
                     const FComplex &crd = coords[j];
 
-                    const int x = int((crd.real - topLeftCoord().real)/(bottomRightCoord().real - topLeftCoord().real)*double(m_buffer.width()));
-                    const int y = int((crd.imag - topLeftCoord().imag)/(bottomRightCoord().imag - topLeftCoord().imag)*double(m_buffer.height()));
+                    const int x = int((crd.real - topLeftCoord().real)/(bottomRightCoord().real - topLeftCoord().real)*double(buffer.width()));
+                    const int y = int((crd.imag - topLeftCoord().imag)/(bottomRightCoord().imag - topLeftCoord().imag)*double(buffer.height()));
 
-                    if (x>=0 && y>=0 && x<m_buffer.width() && y<m_buffer.height())
+                    if (x>=0 && y>=0 && x<buffer.width() && y<buffer.height())
                     {
                         counterBuffer[x][y] ++;
                         if (counterBuffer[x][y] > maxHits)
@@ -112,18 +112,13 @@ void FractalBuddabrot::generateNewBuffer(const QSize &size)
         }
     }
 
-    for (int x=0; x<m_buffer.width(); ++x)
-        for (int y=0; y<m_buffer.height(); ++y)
+    for (int x=0; x<buffer.width(); ++x)
+        for (int y=0; y<buffer.height(); ++y)
         {
             qreal f = qreal(counterBuffer[x][y])/qreal(maxHits);
             QColor color = QColor(int(255*f), int(255*f), int(64*(1.0-f)));
-            m_buffer.setPixelColor(x, y, color);
+            buffer.setPixelColor(x, y, color);
         }
 
-    emit bufferUpdated();
-}
-
-const QImage &FractalBuddabrot::buffer() const
-{
-    return m_buffer;
+    setBuffer(buffer);
 }

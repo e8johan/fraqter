@@ -31,11 +31,7 @@ public:
 
     virtual bool canZoom() const override;
 
-    virtual const QImage &buffer() const override;
     virtual void generateNewBuffer(const QSize &) override;
-
-private:
-    QImage m_buffer;
 };
 
 #endif // FRACTALIFS_H

@@ -23,7 +23,7 @@ AbstractImaginaryRangeEscapeFractal::AbstractImaginaryRangeEscapeFractal(Abstrac
     , m_maxIterations(1000)
 {
     m_worker->setParent(this);
-    connect(m_worker, &AbstractImaginaryRangeEscapeFractalWorker::renderDone, this, &AbstractImaginaryRangeEscapeFractal::onRenderDone);
+    connect(m_worker, &AbstractImaginaryRangeEscapeFractalWorker::renderDone, this, &AbstractFractal::setBuffer);
 
     m_worker->setMaxIterations(maxIterations());
 }
@@ -48,17 +48,6 @@ void AbstractImaginaryRangeEscapeFractal::setMaxIterations(int maxIterations)
 AbstractImaginaryRangeEscapeFractalWorker *AbstractImaginaryRangeEscapeFractal::worker()
 {
     return m_worker;
-}
-
-void AbstractImaginaryRangeEscapeFractal::onRenderDone(const QImage &image)
-{
-    m_buffer = image;
-    emit bufferUpdated();
-}
-
-const QImage &AbstractImaginaryRangeEscapeFractal::buffer() const
-{
-    return m_buffer;
 }
 
 void AbstractImaginaryRangeEscapeFractal::generateNewBuffer(const QSize & size)

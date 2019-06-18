@@ -30,7 +30,6 @@ class FractalBuddabrot : public AbstractImaginaryRangeFractal
 public:
     explicit FractalBuddabrot(QObject *parent = nullptr);
 
-    virtual const QImage &buffer() const override;
     virtual void generateNewBuffer(const QSize &) override;
 
     qreal iterationsFactor() const;
@@ -45,7 +44,6 @@ signals:
     void maxIterationsChanged(int maxIterations);
 
 private:
-    QImage m_buffer;
     qreal m_iterationsFactor;
     int m_maxIterations;
 };

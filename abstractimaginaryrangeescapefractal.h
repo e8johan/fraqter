@@ -71,7 +71,6 @@ public:
     explicit AbstractImaginaryRangeEscapeFractal(AbstractImaginaryRangeEscapeFractalWorker *worker, QObject *parent = nullptr);
 
     virtual void generateNewBuffer(const QSize &) override;
-    virtual const QImage &buffer() const override;
 
     int maxIterations() const;
 
@@ -84,13 +83,8 @@ signals:
 protected:
     AbstractImaginaryRangeEscapeFractalWorker *worker();
 
-private slots:
-    void onRenderDone(const QImage &image);
-
 private:
     AbstractImaginaryRangeEscapeFractalWorker *m_worker;
-
-    QImage m_buffer;
 
     int m_maxIterations;
 };

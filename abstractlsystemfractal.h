@@ -16,7 +16,6 @@ public:
 
     virtual bool canZoom() const override;
 
-    virtual const QImage &buffer() const override;
     virtual void generateNewBuffer(const QSize &) override;
 
     int iterations() const;
@@ -47,7 +46,7 @@ private:
     QString m_axiom;
     QMap<QString, QString> m_rules;
     qreal m_angleStep;
-    QImage m_buffer;
+
     QList<QLineF> m_lines;
     int m_iterations;
     bool m_linesDirty;

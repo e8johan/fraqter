@@ -50,6 +50,10 @@ void AbstractImaginaryRangeFractal::zoom(QSize size, QRect r)
     m_bottomRightCoord = posToComplex(size, r.bottomRight().x(), r.bottomRight().y());
     m_topLeftCoord = t;
 
+    // Pre-zooming for UX
+    QImage b = buffer().copy(r);
+    setBuffer(b.scaled(size));
+
     emit bufferNeedsRepaint();
 }
 
