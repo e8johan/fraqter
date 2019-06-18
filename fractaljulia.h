@@ -37,11 +37,25 @@ public slots:
 signals:
     void cValueChanged(FComplex c);
 
+private:
+    FComplex m_cValue;
+};
+
+class FractalJuliaWorker : public AbstractImaginaryRangeEscapeFractalWorker
+{
+public:
+    explicit FractalJuliaWorker();
+
+    void setCValue(FComplex);
+
 protected:
-    virtual double iterate(const FComplex &z0) const override;
+    virtual void captureRenderState() override;
+    virtual double iterate(int, const FComplex &) const override;
 
 private:
     FComplex m_cValue;
+
+    FComplex m_rs_cValue;
 };
 
 #endif // FRACTALJULIA_H

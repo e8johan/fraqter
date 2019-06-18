@@ -18,10 +18,10 @@
 #include "fractaljulia.h"
 
 FractalJulia::FractalJulia(QObject *parent)
-    : AbstractImaginaryRangeEscapeFractal(parent)
+    : AbstractImaginaryRangeEscapeFractal(new FractalJuliaWorker(), parent)
     , m_cValue(-0.8, 0.156)
 {
-
+    dynamic_cast<FractalJuliaWorker*>(worker())->setCValue(cValue());
 }
 
 FComplex FractalJulia::cValue() const
@@ -35,16 +35,17 @@ void FractalJulia::setCValue(FComplex c)
         return;
 
     m_cValue = c;
+    dynamic_cast<FractalJuliaWorker*>(worker())->setCValue(m_cValue);
 
     emit bufferNeedsRepaint();
     emit cValueChanged(m_cValue);
 }
 
-double FractalJulia::iterate(const FComplex &z0) const
+double FractalJuliaWorker::iterate(int maxIterations, const FComplex &z0) const
 {
-    const FComplex c = cValue();
+    const FComplex c = m_rs_cValue;
     FComplex z = z0;
-    const int imax = maxIterations();
+    const int imax = maxIterations;
 
     int i;
     for (i=0; i<imax; ++i)
@@ -56,4 +57,20 @@ double FractalJulia::iterate(const FComplex &z0) const
         z = nz;
     }
     return double(i)/double(imax);
+}
+
+FractalJuliaWorker::FractalJuliaWorker()
+    : AbstractImaginaryRangeEscapeFractalWorker()
+{
+
+}
+
+void FractalJuliaWorker::setCValue(FComplex c)
+{
+    m_cValue = c;
+}
+
+void FractalJuliaWorker::captureRenderState()
+{
+    m_rs_cValue = m_cValue;
 }

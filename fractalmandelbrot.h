@@ -24,9 +24,16 @@ class FractalMandelbrot : public AbstractImaginaryRangeEscapeFractal
 {
 public:
     explicit FractalMandelbrot(QObject *parent = nullptr);
+};
+
+class FractalMandelbrotWorker : public AbstractImaginaryRangeEscapeFractalWorker
+{
+public:
+    FractalMandelbrotWorker();
 
 protected:
-    virtual double iterate(const FComplex &c0) const override;
+    virtual void captureRenderState() override;
+    virtual double iterate(int, const FComplex &) const override;
 };
 
 #endif // FRACTALMANDELBROT_H

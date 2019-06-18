@@ -18,15 +18,25 @@
 #include "fractalmandelbrot.h"
 
 FractalMandelbrot::FractalMandelbrot(QObject *parent)
-    : AbstractImaginaryRangeEscapeFractal(parent)
+    : AbstractImaginaryRangeEscapeFractal(new FractalMandelbrotWorker(), parent)
 {
 
 }
 
-double FractalMandelbrot::iterate(const FComplex &c0) const
+FractalMandelbrotWorker::FractalMandelbrotWorker()
+    : AbstractImaginaryRangeEscapeFractalWorker()
+{
+
+}
+
+void FractalMandelbrotWorker::captureRenderState()
+{
+}
+
+double FractalMandelbrotWorker::iterate(int maxIterations, const FComplex &c0) const
 {
     FComplex c = c0;
-    const int imax = maxIterations();
+    const int imax = maxIterations;
 
     int i;
     for (i=0; i<imax; ++i)
